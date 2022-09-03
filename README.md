@@ -4,7 +4,7 @@
 
 # Mermaid Extension
 
-> Mermaid-extension - Automated webcam chat reading and routing between devices and servers. You can control toys, lights, keep statistics and much more...
+> Mermaid-extension - Automated webcam chat reading and routing between devices and servers. You can control toys, lights, keep [statistics](https://github.com/prohetamine/webcam-token-stat-stream) and much more...
 
 ### Why?
 
