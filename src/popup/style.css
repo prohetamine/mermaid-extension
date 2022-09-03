@@ -1,0 +1,155 @@
+html,body {
+  padding: 0px;
+  margin: 0px;
+  background: url(images/background.svg);
+}
+
+b {
+  margin-left: 1.5px;
+  margin-right: 1.5px;
+  font-weight: 500;
+}
+
+#root {
+  overflow-y: scroll;
+}
+
+#root,#main {
+  width: 700px;
+  height: 500px;
+}
+
+#main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 2395px;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  height: 500px;
+}
+
+.button-wrapper {
+  position: relative;
+  width: 214px;
+  height: 67px;
+  user-select: none;
+  margin: 38px;
+  margin-top: 280px;
+  filter: drop-shadow(0px 0px 33px rgba(128, 128, 128, 0.15));
+}
+
+.main-btn {
+  width: 214px;
+  height: 67px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(152, 187, 255, 0.35);
+  backdrop-filter: blur(6px);
+  border-radius: 13px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+  cursor: pointer;
+  position: absolute;
+  z-index: 999999;
+}
+
+.border-button {
+  width: 214px;
+  height: 71px;
+  position: absolute;
+  top: 0px;
+  background: url(images/button-border.svg);
+}
+
+.dev-info {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+}
+
+.dev-info-text,.dev-info-link {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #FFFFFF;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.14);
+  margin-left: 11px;
+  margin-right: 11px;
+}
+
+.dev-info-line {
+  width: 1px;
+  height: 17px;
+  background: #FFFFFF;
+}
+
+.dev-info-link {
+  text-decoration: none;
+}
+
+.api-doc {
+  z-index: 9999999;
+  width: 501px;
+  height: 1784px;
+  background: #FFFFFF;
+  border-radius: 7px;
+  box-sizing: border-box;
+  padding-left: 24px;
+  padding-right: 24px;
+  margin-bottom: 100px;
+}
+
+.api-doc-title {
+  margin-top: 28px;
+  width: 453px;
+  height: 23px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 23px;
+  color: #525252;
+}
+
+.api-doc-middle-text {
+  width: 453px;
+  height: 23px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 19px;
+  line-height: 23px;
+  color: #505050;
+}
+
+.api-doc-text {
+  width: 453px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  color: #000000;
+}
+
+.api-doc-link {
+  width: 453px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  color: #00B0CC;
+  text-decoration: none;
+}

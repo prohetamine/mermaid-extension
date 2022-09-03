@@ -1,0 +1,24 @@
+{
+  "name": "Mermaid Extension",
+  "description": "Automated webcam chat reading and routing between devices and servers. Developer: https://prohetamine.ru made with ❤️",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chaturbate.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://chaturbate.com/*"],
+      "js": ["src/webcam-sites/chaturbate-script.js"]
+    }
+  ]
+}

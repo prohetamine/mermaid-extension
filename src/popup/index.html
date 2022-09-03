@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ScriptManager</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id='root'>
+    <div id='main'>
+      <div class='nav'>
+        <div class='button-wrapper'>
+          <label class='main-btn' for='add-script'>
+            Add <b style='margin-left: 4px; margin-right: 4px;'>.mm</b> script
+            <input hidden type='file' id='add-script'>
+          </label>
+          <div class='border-button'></div>
+        </div>
+        <div class='button-wrapper'>
+          <div class='main-btn' id='read-api'>Read <b style='margin-left: 4px; margin-right: 4px;'>API</b></div>
+          <div class='border-button'></div>
+        </div>
+      </div>
+      <div class='api-doc'>
+        <div class="api-doc-title">Working platforms</div>
+        <div class="api-doc-middle-text" style="margin-top: 17px; margin-bottom: 3px;">chaturbate</div>
+        <div class="api-doc-middle-text" style="margin-bottom: 3px;text-decoration: line-through;">bongacams</div>
+        <div class="api-doc-middle-text" style="margin-bottom: 3px;text-decoration: line-through;">myfreecams</div>
+        <div class="api-doc-middle-text" style="text-decoration: line-through;">etc...</div>
+        <div class="api-doc-text" style="margin-top: 13px;">I would like to continue developing, but I need testers on other sites, if you can participate, write to me <a href="https://t.me/prohetamine" target='_blank' class="api-doc-link">contacts</a></div>
+        <div class="api-doc-title">Common API</div>
+        <div class="api-doc-text" style="margin-top: 17px;">You should use the <b>.mm</b> script as follows, forming a <b>fetch</b> request, you can send one or more requests for one event, also cancel requests and slow down their execution, set the number of attempts to send a request.</div>
+        <div class="api-doc-title">Script.mm</div>
+        <div class="api-doc-text" style="margin-top: 17px; margin-bottom: 17px;">
+          <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">{
+  &quot;chaturbateEvent&quot;: [{
+    &quot;fetch&quot;: {
+      &quot;url&quot;: <span style="color: #a31515">&quot;...&quot;</span>
+    },
+    &quot;cancel&quot;: 13000,
+    &quot;attemptsError&quot;: 30,
+    &quot;attemptsSleepError&quot;: 3000
+  }],
+  &quot;bongacams&quot;: [{ <span>...</span> }, { <span>...</span> }],
+  &quot;myfreecams&quot;: [{ <span>...</span> }]
+}
+</pre></td></tr></table></div>
+        </div>
+        <div class="api-doc-text">You can see this example and others in the <a href="https://github.com/prohetamine/mermaid-extension/examples"  target='_blank' class="api-doc-link">examples</a> folder</div>
+        <div class="api-doc-title">API Schema</div>
+        <div class="api-doc-text" style="margin-top: 17px;">You can use the following keys to get the value, use the <b>({</b>event.key<b>})</b> or <b>({</b>event.key.childKey<b>})</b> combination in any string <b>fetch</b> properties.</div>
+        <div class="api-doc-text" style="margin-top: 17px; margin-bottom: 5px;"><a href="/src/webcam-site-schemes/chaturbate.js" target='_blank' class="api-doc-link">chaturbate schema</a></div>
+        <div class="api-doc-text" style="margin-bottom: 5px;"><a href="/src/webcam-site-schemes/bongacams.js" target='_blank' class="api-doc-link">bongacams schema</a></div>
+        <div class="api-doc-text" style="margin-bottom: 5px;"><a href="/src/webcam-site-schemes/myfreecams.js" target='_blank' class="api-doc-link">myfreecams schema</a></div>
+        <div class="api-doc-title">Examples</div>
+        <div class="api-doc-text" style="margin-top: 17px;">Example of a <b>POST</b> request with data about the message <b>id</b>, <b>username of the user</b> and the <b>number of tokens</b>. See the full example in the <a href="https://github.com/prohetamine/mermaid-extension/examples" target='_blank' class="api-doc-link">examples</a> folder.</div>
+        <div class="api-doc-text" style="margin-top: 17px;">
+
+        <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></td><td><pre style="margin: 0; line-height: 125%">{
+  &quot;chaturbateEvent&quot;: [{
+    &quot;fetch&quot;: {
+      &quot;url&quot;: <span style="color: #a31515">&quot;http://localhost:8888/eventsPost&quot;</span>,
+      &quot;method&quot;: <span style="color: #a31515">&quot;POST&quot;</span>,
+      &quot;mode&quot;: <span style="color: #a31515">&quot;cors&quot;</span>,
+      &quot;headers&quot;: {
+        &quot;Content-Type&quot;: <span style="color: #a31515">&quot;application/json&quot;</span>
+      },
+      &quot;body&quot;: <span style="color: #a31515">&quot;{\&quot;id\&quot;:({event.id}),\&quot;username\&quot;:\&quot;({event.parseMessageEvent.userUsername})\&quot;,\&quot;tokenCount\&quot;:({event.parseMessageEvent.tokenCount})}&quot;</span>
+    },
+    &quot;cancel&quot;: 13000,
+    &quot;attemptsError&quot;: 3,
+    &quot;attemptsSleepError&quot;: 5000
+  }]
+}
+</pre></td></tr></table></div>
+      </div>
+      <div class="api-doc-text" style="margin-top: 17px;">Example of a <b>GET</b> request with data about the message <b>id</b>, <b>username of the user</b> and the <b>number of tokens</b>. See the full example in the <a href="https://github.com/prohetamine/mermaid-extension/examples" target='_blank' class="api-doc-link">examples</a> folder.</div>
+<div class="api-doc-text" style="margin-top: 17px; margin-bottom: 17px;">
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></td><td><pre style="margin: 0; line-height: 125%">{
+  &quot;chaturbateEvent&quot;: [{
+    &quot;fetch&quot;: {
+      &quot;url&quot;: <span style="color: #a31515">&quot;http://localhost:8888/events?id=({event.id})&amp;userUsername=({event.parseMessageEvent.userUsername})&amp;tokenCount=({event.parseMessageEvent.tokenCount})&quot;</span>
+    },
+    &quot;cancel&quot;: 13000,
+    &quot;attemptsError&quot;: 30,
+    &quot;attemptsSleepError&quot;: 3000
+  }]
+}
+</pre></td></tr></table></div>
+</div>
+      <div class="api-doc-text">You can see this example and others in the <a href="https://github.com/prohetamine/mermaid-extension/examples" target='_blank' class="api-doc-link">examples</a> folder</div>
+      <div class='dev-info'>
+        <a class='dev-info-link' href="https://github.com/prohetamine/mermaid-extension" target='_blank'>Mermaid Extension</a>
+        <div class='dev-info-line'></div>
+        <div class='dev-info-text'>Stas Prohetamine with ❤</div>
+        <div class='dev-info-line'></div>
+        <a class='dev-info-link' href="https://t.me/prohetamine" target='_blank'>contacts</a>
+      </div>
+    </div>
+  </div>
+  <script src='script.js'></script>
+</body>
+</html>
