@@ -7,7 +7,7 @@
       "headers": {
         "Content-Type": "application/json"
       },
-      "body": "{\"id\":({event.id}),\"username\":\"({event.parseMessageEvent.userUsername})\",\"tokenCount\":({event.parseMessageEvent.tokenCount})}"
+      "body": "{\"id\":({event.id}),\"username\":\"({event.parseMessageEvent.userUsername})\",\"tokenCount\":({event.parseMessageEvent.tokenCount}),\"message\":\"({event.parseMessageEvent.message})\"}"
     },
     "cancel": 13000,
     "attemptsError": 3,
