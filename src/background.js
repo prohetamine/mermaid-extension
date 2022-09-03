@@ -70,6 +70,7 @@ const send = async (request, event) => {
       chaturbateEvent = false,
       bongacamsEvent = false,
       myfreecamsEvent = false,
+      stripchatEvent = false
       fetchCode = false
     } = await chrome.storage.local.get()
 
@@ -83,6 +84,10 @@ const send = async (request, event) => {
 
     if (myfreecamsEvent && fetchCode) {
       fetchCode.myfreecamsEvent.forEach(request => send(request, myfreecamsEvent))
+    }
+
+    if (stripchatEvent && fetchCode) {
+      fetchCode.stripchatEvent.forEach(request => send(request, stripchatEvent))
     }
   })
 })()
