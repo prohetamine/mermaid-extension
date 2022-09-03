@@ -32,8 +32,6 @@ let CB_EVENT_ID = 0
 }
 */
 
-console.log('Page connect')
-
 const observer = new MutationObserver(async mutationRecords => {
   const node = mutationRecords[0].addedNodes[0]
 
@@ -124,4 +122,6 @@ if (chat) {
     subtree: true,
     characterDataOldValue: true
   })
+
+  alert('Mermaid extension: chaturbate chat connected')
 }
