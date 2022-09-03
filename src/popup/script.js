@@ -8,14 +8,25 @@ addScript.addEventListener('change', (event) => {
   reader.readAsText(file)
 
   reader.onload = () => {
-    chrome.storage.local.set({ fetchCode: JSON.parse(reader.result) })
+    try {
+      chrome.storage.local.set({ fetchCode: JSON.parse(reader.result) })
+      alert(`Good load "${file.name}" script`)
+    } catch (err) {
+      alert(`
+        Bad load "${file.name}" script
+        ------------------------------
+        stack: ${err.stack}
+      `)
+    }
   }
 
   reader.onerror = () => {
-    console.log(reader.error)
+    alert(`
+      Bad load "${file.name}" script
+      ------------------------------
+      stack: FileReader error
+    `)
   }
-
-  alert(12345)
 })
 
 readApi.addEventListener('click', () => {
