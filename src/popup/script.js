@@ -11,12 +11,14 @@ addScript.addEventListener('change', (event) => {
     try {
       chrome.storage.local.set({ fetchCode: JSON.parse(reader.result) })
       alert(`Good load "${file.name}" script`)
+      addScript.value = ''
     } catch (err) {
       alert(`
         Bad load "${file.name}" script
         ------------------------------
         stack: ${err.stack}
       `)
+      addScript.value = ''
     }
   }
 
