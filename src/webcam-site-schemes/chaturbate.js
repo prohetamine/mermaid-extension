@@ -3,6 +3,7 @@
 {
   contextId: '9999-9999-9999', // string ({event.contextId}) - the id of the current window is saved until the page is completely reloaded
   id: 1, // number ({event.id}) - serial number of the message (event)
+  modelUsername: 'model', // string ({event.modelUsername}) - origin model username
   hashId: '3021e68df9a7200135725c6331369a22', // string ({event.hashId}) - md5 hash messages (there may be repetitions)
   platform: 'chaturbate', // string ({event.platform}) - the platform from which the event comes
   htmlMessage: '<html>', // string ({event.htmlMessage}) - full message in html form

@@ -34,6 +34,7 @@ let CB_EVENT_ID = 0
 
 const observer = new MutationObserver(async mutationRecords => {
   const node = mutationRecords[0].addedNodes[0]
+      , broadcaster_username = window.location.pathname.replace(/(\/b\/|\/)/, '').slice(0, -1)
 
   let htmlMessage = ''
     , isRemovedMessage = false
@@ -49,10 +50,11 @@ const observer = new MutationObserver(async mutationRecords => {
     , isUser = false
     , username = ''
 
+
   try {
     username = node.querySelector('span[title="Username"]').innerText
 
-    if (window.location.href.match(username)) {
+    if (username === broadcaster_username) {
       isModel = true
     } else {
       isUser = true
@@ -96,6 +98,7 @@ const observer = new MutationObserver(async mutationRecords => {
       id: CB_EVENT_ID,
       hashId: MD5(JSON.stringify({ platform: 'chaturbate', htmlMessage })),
       platform: 'chaturbate',
+      modelUsername: broadcaster_username,
       htmlMessage,
       parseMessageEvent: {
         isModel,
