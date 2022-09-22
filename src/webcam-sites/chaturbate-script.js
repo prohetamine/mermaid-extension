@@ -115,8 +115,6 @@ const observer = new MutationObserver(async mutationRecords => {
   })
 })
 
-
-
 const chat = document.querySelector('div[class="msg-list-fvm message-list"]')
 
 if (chat) {
@@ -126,5 +124,8 @@ if (chat) {
     characterDataOldValue: true
   })
 
-  alert('Mermaid extension: chaturbate chat connected')
+  setTimeout(() => {
+    document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
+    document.querySelector('[data-paction-name="Send"]').click()
+  }, 5000)
 }

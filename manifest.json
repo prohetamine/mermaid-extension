@@ -23,7 +23,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://chaturbate.com/*"],
+      "matches": ["https://chaturbate.com/b/*"],
       "js": ["src/webcam-sites/chaturbate-script.js"]
     }
   ]
