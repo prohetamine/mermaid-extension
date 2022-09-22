@@ -11,6 +11,10 @@ r.exports=function(r){return null!=r&&(t(r)||o(r)||!!r._isBuffer)}},function(r,n
 const contextId = parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000)
 let CB_EVENT_ID = 0
 
+const sendStack = {
+  /* contextId */
+}
+
 /*
 {
   contextId: '9999-9999-9999',
@@ -90,6 +94,10 @@ const observer = new MutationObserver(async mutationRecords => {
     message = node.querySelector('.msg-text').innerText
   } catch (err) {}
 
+  if (message.match(/^\[mme\]\s/)) {
+    return
+  }
+
   CB_EVENT_ID++
 
   await chrome.storage.local.set({
@@ -128,4 +136,30 @@ if (chat) {
     document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
     document.querySelector('[data-paction-name="Send"]').click()
   }, 5000)
+
+  chrome.storage.local.onChanged.addListener(async () => {
+    const {
+      chaturbateEventCallback = false,
+      bongacamsEventCallback = false,
+      myfreecamsEventCallback = false,
+      stripchatEventCallback = false
+    } = await chrome.storage.local.get()
+
+    if (chaturbateEventCallback) {
+      chaturbateEventCallback.forEach(event => {
+        if (event.isOk && (sendStack[event.contextId] ? !(sendStack[event.contextId].find(id => id === event.id)) : true)) {
+          event.messages.forEach(message => {
+            if (sendStack[event.contextId]) {
+              sendStack[event.contextId].push(event.id)
+            } else {
+              sendStack[event.contextId] = []
+            }
+
+            document.querySelector('.chat-input-field').innerText = '[mme] ' + message
+            document.querySelector('[data-paction-name="Send"]').click()
+          })
+        }
+      })
+    }
+  })
 }

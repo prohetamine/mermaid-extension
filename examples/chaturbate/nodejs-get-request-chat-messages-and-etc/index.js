@@ -10,7 +10,18 @@ app.get('/events', (req, res) => {
   console.log(req.query.message)
 
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.send('ok')
+
+  if (req.query.message.length === 0) {
+    res.send(
+      JSON.stringify([])
+    )
+  }
+
+  if (req.query.message.match(/(hello|hey)/)) {
+    res.send(
+      JSON.stringify(['hello', ':Helloguys'])
+    )
+  }
 })
 
 app.listen(8888)

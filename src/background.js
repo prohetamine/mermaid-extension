@@ -95,11 +95,7 @@ const ifParser = condition => {
       ]
     }
   }
-
-  console.log('firstCondition', firstCondition)
-  console.log('isOr', 'isAnd', isOr, isAnd)
-  console.log('lastCondition', lastCondition)
-
+  
   if (isOr || isAnd) {
     if (isOr) {
       if (
@@ -180,17 +176,19 @@ const send = async (request, event) => {
     )
 
     try {
-      await fetch(_request.fetch.url, {
+      const messages = await fetch(_request.fetch.url, {
         signal: controller.signal,
         ..._request.fetch
-      })
+      }).then(d => d.json())
       clearTimeout(timeId)
-      return
+      return { messages, id: event.id, contextId: event.contextId, isOk: true }
     } catch (err) {
       console.log(err)
       await sleep(attemptsSleepError)
     }
   }
+
+  return { messages: [], id: event.id, contextId: event.contextId, isOk: false }
 }
 
 ;(async () => {
@@ -204,7 +202,11 @@ const send = async (request, event) => {
     } = await chrome.storage.local.get()
 
     if (chaturbateEvent && fetchCode) {
-      fetchCode.chaturbateEvent.forEach(request => send(request, chaturbateEvent))
+      chrome.storage.local.set({
+        chaturbateEventCallback: await Promise.all(
+          fetchCode.chaturbateEvent.map(request => send(request, chaturbateEvent))
+        )
+      })
     }
 
     if (bongacamsEvent && fetchCode) {
