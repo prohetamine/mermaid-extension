@@ -146,9 +146,12 @@ if (chat) {
     } = await chrome.storage.local.get()
 
     if (chaturbateEventCallback) {
-      chaturbateEventCallback.forEach(event => {
+      for (let i = 0; i < chaturbateEventCallback.length; i++) {
+        const event = chaturbateEventCallback[i]
+
         if (event.isOk && (sendStack[event.contextId] ? !(sendStack[event.contextId].find(id => id === event.id)) : true)) {
-          event.messages.forEach(message => {
+          for (let m = 0; m < event.messages.length; m++) {
+            const message = event.messages[m]
             if (sendStack[event.contextId]) {
               sendStack[event.contextId].push(event.id)
             } else {
@@ -157,9 +160,11 @@ if (chat) {
 
             document.querySelector('.chat-input-field').innerText = '[mme] ' + message
             document.querySelector('[data-paction-name="Send"]').click()
-          })
+
+            await sleep(500)
+          }
         }
-      })
+      }
     }
   })
 }

@@ -95,7 +95,7 @@ const ifParser = condition => {
       ]
     }
   }
-  
+
   if (isOr || isAnd) {
     if (isOr) {
       if (
@@ -202,7 +202,7 @@ const send = async (request, event) => {
     } = await chrome.storage.local.get()
 
     if (chaturbateEvent && fetchCode) {
-      chrome.storage.local.set({
+      await chrome.storage.local.set({
         chaturbateEventCallback: await Promise.all(
           fetchCode.chaturbateEvent.map(request => send(request, chaturbateEvent))
         )
@@ -210,15 +210,27 @@ const send = async (request, event) => {
     }
 
     if (bongacamsEvent && fetchCode) {
-      fetchCode.bongacamsEvent.forEach(request => send(request, bongacamsEvent))
+      await chrome.storage.local.set({
+        bongacamsEventCallback: await Promise.all(
+          fetchCode.bongacamsEvent.map(request => send(request, chaturbateEvent))
+        )
+      })
     }
 
     if (myfreecamsEvent && fetchCode) {
-      fetchCode.myfreecamsEvent.forEach(request => send(request, myfreecamsEvent))
+      await chrome.storage.local.set({
+        myfreecamsEventCallback: await Promise.all(
+          fetchCode.myfreecamsEvent.map(request => send(request, chaturbateEvent))
+        )
+      })
     }
 
     if (stripchatEvent && fetchCode) {
-      fetchCode.stripchatEvent.forEach(request => send(request, stripchatEvent))
+      await chrome.storage.local.set({
+        stripchatEventCallback: await Promise.all(
+          fetchCode.stripchatEvent.map(request => send(request, chaturbateEvent))
+        )
+      })
     }
   })
 })()
