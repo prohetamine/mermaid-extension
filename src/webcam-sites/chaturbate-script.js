@@ -35,7 +35,8 @@ const usersTokenStack = {
     isToken: false,
     tokenCount: 0,
     message: 'Hello!!',
-    isRemovedMessage: false
+    isRemovedMessage: false,
+    allTokenCount: 99
   }
 }
 */
