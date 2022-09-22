@@ -94,7 +94,7 @@ const observer = new MutationObserver(async mutationRecords => {
     message = node.querySelector('.msg-text').innerText
   } catch (err) {}
 
-  if (message.match(/^\[mme\]\s/)) {
+  if (htmlMessage.match(/:sdkflirjfirlevijergjeigjeiljgenr/)) {
     return
   }
 
@@ -158,7 +158,7 @@ if (chat) {
               sendStack[event.contextId] = []
             }
 
-            document.querySelector('.chat-input-field').innerText = '[mme] ' + message
+            document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + message
             document.querySelector('[data-paction-name="Send"]').click()
 
             await sleep(500)
