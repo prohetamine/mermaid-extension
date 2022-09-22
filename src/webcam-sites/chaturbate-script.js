@@ -15,6 +15,10 @@ const sendStack = {
   /* contextId */
 }
 
+const usersTokenStack = {
+  /* contextId */
+}
+
 /*
 {
   contextId: '9999-9999-9999',
@@ -100,6 +104,14 @@ const observer = new MutationObserver(async mutationRecords => {
 
   CB_EVENT_ID++
 
+  if (isUser) {
+    if (usersTokenStack[username] === undefined) {
+      usersTokenStack[username] = 0
+    } else {
+      usersTokenStack[username] += isToken ? tokenCount : 0
+    }
+  }
+
   await chrome.storage.local.set({
     chaturbateEvent: ({
       contextId,
@@ -116,6 +128,7 @@ const observer = new MutationObserver(async mutationRecords => {
         userUsername: isUser ? username : '',
         isToken,
         tokenCount,
+        allTokenCount: isUser ? usersTokenStack[username] : 0,
         message,
         isRemovedMessage
       }
@@ -159,7 +172,7 @@ if (chat) {
             }
 
             await sleep(delay)
-                        
+
             document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
             document.querySelector('[data-paction-name="Send"]').click()
           }
