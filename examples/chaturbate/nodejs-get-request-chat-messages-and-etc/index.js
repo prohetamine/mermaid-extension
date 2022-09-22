@@ -19,8 +19,8 @@ app.get('/events', (req, res) => {
 
   if (req.query.message.match(/(hello|hey)/)) {
     res.send(
-      JSON.stringify([':Helloguys'])
-      //JSON.stringify(['hello', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', ':Helloguys'])
+      JSON.stringify([{ text: ':Helloguys', delay: 0 }])
+      //JSON.stringify([{ text: 'hello', delay: 500 }, { text: ':Helloguys', delay: 500 }])
     )
   }
 })

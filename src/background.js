@@ -1,3 +1,7 @@
+const sendStack = {
+  /* contextId */
+}
+
 const sleep = ms => new Promise(res => setTimeout(res, ms))
 
 const replacementRequest = (request, event) => {
@@ -175,14 +179,28 @@ const send = async (request, event) => {
       cancel
     )
 
+    if (!sendStack[event.contextId]) {
+      sendStack[event.contextId] = []
+    }
+
+    if (!!(sendStack[event.contextId].find(id => id === event.id))) {
+      return false
+    }
+
+    if (sendStack[event.contextId]) {
+      sendStack[event.contextId].push(event.id)
+    }
+
     try {
       const messages = await fetch(_request.fetch.url, {
         signal: controller.signal,
         ..._request.fetch
       }).then(d => d.json())
       clearTimeout(timeId)
+
       return { messages, id: event.id, contextId: event.contextId, isOk: true }
     } catch (err) {
+      sendStack[event.contextId] = sendStack[event.contextId].filter(id => id !== event.id)
       console.log(err)
       await sleep(attemptsSleepError)
     }
@@ -203,33 +221,41 @@ const send = async (request, event) => {
 
     if (chaturbateEvent && fetchCode) {
       await chrome.storage.local.set({
-        chaturbateEventCallback: await Promise.all(
-          fetchCode.chaturbateEvent.map(request => send(request, chaturbateEvent))
-        )
+        chaturbateEventCallback: (
+          await Promise.all(
+            fetchCode.chaturbateEvent.map(request => send(request, chaturbateEvent))
+          )
+        ).filter(send => send)
       })
     }
 
     if (bongacamsEvent && fetchCode) {
       await chrome.storage.local.set({
-        bongacamsEventCallback: await Promise.all(
-          fetchCode.bongacamsEvent.map(request => send(request, chaturbateEvent))
-        )
+        bongacamsEventCallback: (
+          await Promise.all(
+            fetchCode.bongacamsEvent.map(request => send(request, chaturbateEvent))
+          )
+        ).filter(send => send)
       })
     }
 
     if (myfreecamsEvent && fetchCode) {
       await chrome.storage.local.set({
-        myfreecamsEventCallback: await Promise.all(
-          fetchCode.myfreecamsEvent.map(request => send(request, chaturbateEvent))
-        )
+        myfreecamsEventCallback: (
+            await Promise.all(
+            fetchCode.myfreecamsEvent.map(request => send(request, chaturbateEvent))
+          )
+        ).filter(send => send)
       })
     }
 
     if (stripchatEvent && fetchCode) {
       await chrome.storage.local.set({
-        stripchatEventCallback: await Promise.all(
-          fetchCode.stripchatEvent.map(request => send(request, chaturbateEvent))
-        )
+        stripchatEventCallback: (
+            await Promise.all(
+            fetchCode.stripchatEvent.map(request => send(request, chaturbateEvent))
+          )
+        ).filter(send => send)
       })
     }
   })

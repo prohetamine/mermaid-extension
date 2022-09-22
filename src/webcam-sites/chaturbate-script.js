@@ -151,17 +151,17 @@ if (chat) {
 
         if (event.isOk && (sendStack[event.contextId] ? !(sendStack[event.contextId].find(id => id === event.id)) : true)) {
           for (let m = 0; m < event.messages.length; m++) {
-            const message = event.messages[m]
+            const { text, delay } = event.messages[m]
             if (sendStack[event.contextId]) {
               sendStack[event.contextId].push(event.id)
             } else {
               sendStack[event.contextId] = []
             }
 
-            document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + message
+            await sleep(delay)
+                        
+            document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
             document.querySelector('[data-paction-name="Send"]').click()
-
-            await sleep(500)
           }
         }
       }
