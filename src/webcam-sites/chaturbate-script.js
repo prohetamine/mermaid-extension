@@ -147,9 +147,9 @@ if (chat) {
   })
 
   setTimeout(() => {
-    alert('Mermaid extension: chat connected')
-    //document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
-    //document.querySelector('[data-paction-name="Send"]').click()
+    // alert('Mermaid extension: chat connected')
+    document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
+    document.querySelector('[data-paction-name="Send"]').click()
   }, 5000)
 
   chrome.storage.local.onChanged.addListener(async () => {
