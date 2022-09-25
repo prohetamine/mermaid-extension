@@ -350,16 +350,16 @@ const send = async (request, event) => {
       cancel
     )
 
-    if (!sendStack[event.contextId]) {
-      sendStack[event.contextId] = []
+    if (!sendStack[event.contextId+_request.fetch.url]) {
+      sendStack[event.contextId+_request.fetch.url] = []
     }
 
-    if (!!(sendStack[event.contextId].find(id => id === event.id))) {
+    if (!!(sendStack[event.contextId+_request.fetch.url].find(id => id === event.id))) {
       return false
     }
 
-    if (sendStack[event.contextId]) {
-      sendStack[event.contextId].push(event.id)
+    if (sendStack[event.contextId+_request.fetch.url]) {
+      sendStack[event.contextId+_request.fetch.url].push(event.id)
     }
 
     try {
@@ -369,15 +369,15 @@ const send = async (request, event) => {
       }).then(d => d.json())
       clearTimeout(timeId)
 
-      return { messages, id: event.id, contextId: event.contextId, isOk: true }
+      return { messages, id: event.id, contextId: event.contextId+_request.fetch.url, isOk: true }
     } catch (err) {
-      sendStack[event.contextId] = sendStack[event.contextId].filter(id => id !== event.id)
+      sendStack[event.contextId+_request.fetch.url] = sendStack[event.contextId+_request.fetch.url].filter(id => id !== event.id)
       console.log(err)
       await sleep(attemptsSleepError)
     }
   }
 
-  return { messages: [], id: event.id, contextId: event.contextId, isOk: false }
+  return { messages: [], id: event.id, contextId: event.contextId+_request.fetch.url, isOk: false }
 }
 
 ;(async () => {
