@@ -136,7 +136,6 @@ const observer = new MutationObserver(async mutationRecords => {
   }, () => {})
 })
 
-
 document.addEventListener('readystatechange', () => {
   if (document.readyState === 'complete') {
     const chat          = document.querySelector('div[class="msg-list-fvm message-list"]')
