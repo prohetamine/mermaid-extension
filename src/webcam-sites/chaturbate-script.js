@@ -146,12 +146,9 @@ document.addEventListener('readystatechange', () => {
     let isStopWritingBot = false
       , timeInputSleepId = 0
 
-    chatInput.addEventListener('input', event => {
+    chatInput.addEventListener('focus', event => {
       if (event.isTrusted) {
         isStopWritingBot = true
-        if (event.target.innerText.length === 0) {
-          isStopWritingBot = false
-        }
       }
     })
 
