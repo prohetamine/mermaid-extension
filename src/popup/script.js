@@ -11,6 +11,9 @@ addScript.addEventListener('change', (event) => {
     try {
       chrome.storage.local.set({ fetchCode: JSON.parse(reader.result) }, () => {
         alert(`Load "${file.name}" script`)
+        if (Object.keys(JSON.parse(reader.result)).find(key => key === 'chaturbateSendSocket')) {
+          alert(`In order for the "${file.name}" script to start working correctly, you need to reload the pages.`)
+        }
       })
       alert(`Check "${file.name}" script`)
       addScript.value = ''

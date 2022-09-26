@@ -156,17 +156,15 @@ document.addEventListener('readystatechange', () => {
         document.querySelector('[data-paction-name="Send"]').click()
 
         chrome.storage.local.get(({ fetchCode }) => {
-          if (fetchCode.chaturbateSendSocket && fetchCode.chaturbateSendSocket.host && fetchCode.chaturbateSendSocket.listen) {
+          if (fetchCode && fetchCode.chaturbateSendSocket && fetchCode.chaturbateSendSocket.host && fetchCode.chaturbateSendSocket.listen) {
             const socket = io(
               fetchCode.chaturbateSendSocket.host,
               fetchCode.chaturbateSendSocket.options
             )
 
             socket.on('connect', () => {
-              setTimeout(() => {
-                document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket connected :kdlweeio43i34fi34fk3o4fk`
-                document.querySelector('[data-paction-name="Send"]').click()
-              }, 1000)
+              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket connected :kdlweeio43i34fi34fk3o4fk`
+              document.querySelector('[data-paction-name="Send"]').click()
             })
 
             socket.io.on('reconnect_attempt', (attempt) => {
