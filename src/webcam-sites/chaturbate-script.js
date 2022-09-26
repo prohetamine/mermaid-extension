@@ -59,7 +59,6 @@ const observer = new MutationObserver(async mutationRecords => {
     , isUser = false
     , username = ''
 
-
   try {
     username = node.querySelector('span[title="Username"]').innerText
 
@@ -134,15 +133,54 @@ const observer = new MutationObserver(async mutationRecords => {
         isRemovedMessage
       }
     })
-  }, () => {
-    console.log('push event')
-  })
+  }, () => {})
 })
 
 
 document.addEventListener('readystatechange', () => {
   if (document.readyState === 'complete') {
-    const chat = document.querySelector('div[class="msg-list-fvm message-list"]')
+    const chat          = document.querySelector('div[class="msg-list-fvm message-list"]')
+        , chatInput     = document.querySelector('.chat-input-field')
+        , sendButton    = document.querySelector('[data-paction-name="Send"]')
+        , pmTab         = document.querySelector('[id="pm-tab-default"]')
+
+    let isStopWritingBot = false
+      , timeInputSleepId = 0
+
+    chatInput.addEventListener('input', event => {
+      if (event.isTrusted) {
+        isStopWritingBot = true
+        if (event.target.innerText.length === 0) {
+          isStopWritingBot = false
+        }
+      }
+    })
+
+    sendButton.addEventListener('click', event => {
+      if (event.isTrusted) {
+        setTimeout(() => {
+          isStopWritingBot = false
+        }, 1000)
+      }
+    })
+
+    window.addEventListener('keyup', event => {
+      if (event.key === 'Enter' && event.isTrusted) {
+        setTimeout(() => {
+          isStopWritingBot = false
+        }, 1000)
+      }
+    })
+
+    const sleeperChat = () => new Promise(async res => {
+      for (;;) {
+        if (!(pmTab.classList.contains('active') || isStopWritingBot)) {
+          res()
+          return
+        }
+        await sleep(1000)
+      }
+    })
 
     if (chat) {
       observer.observe(chat, {
@@ -151,9 +189,11 @@ document.addEventListener('readystatechange', () => {
         characterDataOldValue: true
       })
 
-      setTimeout(() => {
-        document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
-        document.querySelector('[data-paction-name="Send"]').click()
+      setTimeout(async () => {
+        await sleeperChat()
+
+        chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
+        sendButton.click()
 
         chrome.storage.local.get(({ fetchCode }) => {
           if (fetchCode && fetchCode.chaturbateSendSocket && fetchCode.chaturbateSendSocket.host && fetchCode.chaturbateSendSocket.listen) {
@@ -162,34 +202,38 @@ document.addEventListener('readystatechange', () => {
               fetchCode.chaturbateSendSocket.options
             )
 
-            socket.on('connect', () => {
-              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket connected :kdlweeio43i34fi34fk3o4fk`
-              document.querySelector('[data-paction-name="Send"]').click()
+            socket.on('connect', async () => {
+              await sleeperChat()
+              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket connected :kdlweeio43i34fi34fk3o4fk`
+              sendButton.click()
             })
 
-            socket.io.on('reconnect_attempt', (attempt) => {
-              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :fwhfuwoefhweofwhu38423ho3823foh2`
-              document.querySelector('[data-paction-name="Send"]').click()
+            socket.io.on('reconnect_attempt', async (attempt) => {
+              await sleeperChat()
+              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :fwhfuwoefhweofwhu38423ho3823foh2`
+              sendButton.click()
             })
 
-            socket.io.on("reconnect_failed", () => {
-              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :3498522fm24f2k4f842f98948f24f8`
-              document.querySelector('[data-paction-name="Send"]').click()
+            socket.io.on('reconnect_failed', async () => {
+              await sleeperChat()
+              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :3498522fm24f2k4f842f98948f24f8`
+              sendButton.click()
             })
 
-            socket.io.on("error", (error) => {
-              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket error :3498522fm24f2k4f842f98948f24f8`
-              document.querySelector('[data-paction-name="Send"]').click()
+            socket.io.on('error', async (error) => {
+              await sleeperChat()
+              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket error :3498522fm24f2k4f842f98948f24f8`
+              sendButton.click()
             })
 
             socket.on(fetchCode.chaturbateSendSocket.listen, async messages => {
-              console.log(messages)
               for (let m = 0; m < messages.length; m++) {
                 const { text, delay } = messages[m]
                 await sleep(delay)
 
-                document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
-                document.querySelector('[data-paction-name="Send"]').click()
+                await sleeperChat()
+                chatInput.innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
+                sendButton.click()
               }
             })
           }
@@ -217,11 +261,11 @@ document.addEventListener('readystatechange', () => {
                   } else {
                     sendStack[event.contextId] = []
                   }
-
                   await sleep(delay)
 
-                  document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
-                  document.querySelector('[data-paction-name="Send"]').click()
+                  await sleeperChat()
+                  chatInput.innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
+                  sendButton.click()
                 }
               }
             }
