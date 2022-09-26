@@ -9,8 +9,10 @@ addScript.addEventListener('change', (event) => {
 
   reader.onload = () => {
     try {
-      chrome.storage.local.set({ fetchCode: JSON.parse(reader.result) })
-      alert(`Good load "${file.name}" script`)
+      chrome.storage.local.set({ fetchCode: JSON.parse(reader.result) }, () => {
+        alert(`Load "${file.name}" script`)
+      })
+      alert(`Check "${file.name}" script`)
       addScript.value = ''
     } catch (err) {
       alert(`

@@ -113,7 +113,7 @@ const observer = new MutationObserver(async mutationRecords => {
     }
   }
 
-  await chrome.storage.local.set({
+  chrome.storage.local.set({
     chaturbateEvent: ({
       contextId,
       id: CB_EVENT_ID,
@@ -134,52 +134,102 @@ const observer = new MutationObserver(async mutationRecords => {
         isRemovedMessage
       }
     })
+  }, () => {
+    console.log('push event')
   })
 })
 
-const chat = document.querySelector('div[class="msg-list-fvm message-list"]')
 
-if (chat) {
-  observer.observe(chat, {
-    childList: true,
-    subtree: true,
-    characterDataOldValue: true
-  })
+document.addEventListener('readystatechange', () => {
+  if (document.readyState === 'complete') {
+    const chat = document.querySelector('div[class="msg-list-fvm message-list"]')
 
-  setTimeout(() => {
-    // alert('Mermaid extension: chat connected')
-    document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
-    document.querySelector('[data-paction-name="Send"]').click()
-  }, 5000)
+    if (chat) {
+      observer.observe(chat, {
+        childList: true,
+        subtree: true,
+        characterDataOldValue: true
+      })
 
-  chrome.storage.local.onChanged.addListener(async () => {
-    const {
-      chaturbateEventCallback = false,
-      bongacamsEventCallback = false,
-      myfreecamsEventCallback = false,
-      stripchatEventCallback = false
-    } = await chrome.storage.local.get()
+      setTimeout(() => {
+        document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
+        document.querySelector('[data-paction-name="Send"]').click()
 
-    if (chaturbateEventCallback) {
-      for (let i = 0; i < chaturbateEventCallback.length; i++) {
-        const event = chaturbateEventCallback[i]
+        chrome.storage.local.get(({ fetchCode }) => {
+          if (fetchCode.chaturbateSendSocket && fetchCode.chaturbateSendSocket.host && fetchCode.chaturbateSendSocket.listen) {
+            const socket = io(
+              fetchCode.chaturbateSendSocket.host,
+              fetchCode.chaturbateSendSocket.options
+            )
 
-        if (event.isOk && (sendStack[event.contextId] ? !(sendStack[event.contextId].find(id => id === event.id)) : true)) {
-          for (let m = 0; m < event.messages.length; m++) {
-            const { text, delay } = event.messages[m]
-            if (sendStack[event.contextId]) {
-              sendStack[event.contextId].push(event.id)
-            } else {
-              sendStack[event.contextId] = []
-            }
+            socket.on('connect', () => {
+              setTimeout(() => {
+                document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket connected :kdlweeio43i34fi34fk3o4fk`
+                document.querySelector('[data-paction-name="Send"]').click()
+              }, 1000)
+            })
 
-            await sleep(delay)
+            socket.io.on('reconnect_attempt', (attempt) => {
+              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :fwhfuwoefhweofwhu38423ho3823foh2`
+              document.querySelector('[data-paction-name="Send"]').click()
+            })
 
-            document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
-            document.querySelector('[data-paction-name="Send"]').click()
+            socket.io.on("reconnect_failed", () => {
+              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :3498522fm24f2k4f842f98948f24f8`
+              document.querySelector('[data-paction-name="Send"]').click()
+            })
+
+            socket.io.on("error", (error) => {
+              document.querySelector('.chat-input-field').innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket error :3498522fm24f2k4f842f98948f24f8`
+              document.querySelector('[data-paction-name="Send"]').click()
+            })
+
+            socket.on(fetchCode.chaturbateSendSocket.listen, async messages => {
+              console.log(messages)
+              for (let m = 0; m < messages.length; m++) {
+                const { text, delay } = messages[m]
+                await sleep(delay)
+
+                document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
+                document.querySelector('[data-paction-name="Send"]').click()
+              }
+            })
           }
-        }
-      }
+        })
+      }, 5000)
+
+      chrome.storage.local.onChanged.addListener(() => {
+        chrome.storage.local.get(async storage => {
+          const {
+            chaturbateEventCallback = false,
+            bongacamsEventCallback = false,
+            myfreecamsEventCallback = false,
+            stripchatEventCallback = false
+          } = storage
+
+          if (chaturbateEventCallback) {
+            for (let i = 0; i < chaturbateEventCallback.length; i++) {
+              const event = chaturbateEventCallback[i]
+
+              if (event.isOk && (sendStack[event.contextId] ? !(sendStack[event.contextId].find(id => id === event.id)) : true)) {
+                for (let m = 0; m < event.messages.length; m++) {
+                  const { text, delay } = event.messages[m]
+                  if (sendStack[event.contextId]) {
+                    sendStack[event.contextId].push(event.id)
+                  } else {
+                    sendStack[event.contextId] = []
+                  }
+
+                  await sleep(delay)
+
+                  document.querySelector('.chat-input-field').innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
+                  document.querySelector('[data-paction-name="Send"]').click()
+                }
+              }
+            }
+          }
+        })
+      })
     }
-  })
-}
+  }
+})

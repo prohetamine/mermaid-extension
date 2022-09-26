@@ -381,53 +381,63 @@ const send = async (request, event) => {
 }
 
 ;(async () => {
-  chrome.storage.local.onChanged.addListener(async () => {
-    const {
-      chaturbateEvent = false,
-      bongacamsEvent = false,
-      myfreecamsEvent = false,
-      stripchatEvent = false,
-      fetchCode = false
-    } = await chrome.storage.local.get()
+  chrome.storage.local.onChanged.addListener(() => {
+		chrome.storage.local.get(async storage => {
+			const {
+	      chaturbateEvent = false,
+	      bongacamsEvent = false,
+	      myfreecamsEvent = false,
+	      stripchatEvent = false,
+	      fetchCode = false
+	    } = storage
 
-    if (chaturbateEvent && fetchCode) {
-      await chrome.storage.local.set({
-        chaturbateEventCallback: (
-          await Promise.all(
-            fetchCode.chaturbateEvent.map(request => send(request, chaturbateEvent))
-          )
-        ).filter(send => send)
-      })
-    }
+			if (chaturbateEvent && fetchCode) {
+				await new Promise(async resolve => {
+					chrome.storage.local.set({
+		        chaturbateEventCallback: (
+		          await Promise.all(
+		            fetchCode.chaturbateEvent.map(request => send(request, chaturbateEvent))
+		          )
+		        ).filter(send => send)
+		      }, resolve)
+				})
+	    }
 
-    if (bongacamsEvent && fetchCode) {
-      await chrome.storage.local.set({
-        bongacamsEventCallback: (
-          await Promise.all(
-            fetchCode.bongacamsEvent.map(request => send(request, chaturbateEvent))
-          )
-        ).filter(send => send)
-      })
-    }
+	    if (bongacamsEvent && fetchCode) {
+				await new Promise(async resolve => {
+					chrome.storage.local.set({
+		        bongacamsEventCallback: (
+		          await Promise.all(
+		            fetchCode.bongacamsEvent.map(request => send(request, chaturbateEvent))
+		          )
+		        ).filter(send => send)
+		      }, resolve)
+				})
+	    }
 
-    if (myfreecamsEvent && fetchCode) {
-      await chrome.storage.local.set({
-        myfreecamsEventCallback: (
-            await Promise.all(
-            fetchCode.myfreecamsEvent.map(request => send(request, chaturbateEvent))
-          )
-        ).filter(send => send)
-      })
-    }
+	    if (myfreecamsEvent && fetchCode) {
+				await new Promise(async resolve => {
+					chrome.storage.local.set({
+		        myfreecamsEventCallback: (
+		          await Promise.all(
+		            fetchCode.myfreecamsEvent.map(request => send(request, chaturbateEvent))
+		          )
+		        ).filter(send => send)
+		      }, resolve)
+				})
+	    }
 
-    if (stripchatEvent && fetchCode) {
-      await chrome.storage.local.set({
-        stripchatEventCallback: (
-            await Promise.all(
-            fetchCode.stripchatEvent.map(request => send(request, chaturbateEvent))
-          )
-        ).filter(send => send)
-      })
-    }
+	    if (stripchatEvent && fetchCode) {
+				await new Promise(async resolve => {
+					chrome.storage.local.set({
+		        stripchatEventCallback: (
+		          await Promise.all(
+		            fetchCode.stripchatEvent.map(request => send(request, chaturbateEvent))
+		          )
+		        ).filter(send => send)
+		      }, resolve)
+				})
+	    }
+		})
   })
 })()
