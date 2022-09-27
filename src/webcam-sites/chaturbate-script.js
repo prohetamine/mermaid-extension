@@ -152,17 +152,21 @@ document.addEventListener('readystatechange', () => {
       }
     })
 
+    chatInput.addEventListener('blur', event => {
+      if (event.isTrusted) {
+        isStopWritingBot = false
+      }
+    })
+
     chatInput.addEventListener('paste', event => {
       if (event.isTrusted) {
         isStopWritingBot = true
-        if (event.target.innerText.length === 0) {
-          isStopWritingBot = false
-        }
       }
     })
 
     sendButton.addEventListener('click', event => {
       if (event.isTrusted) {
+        chatInput.blur()
         setTimeout(() => {
           isStopWritingBot = false
         }, 1000)
@@ -171,6 +175,7 @@ document.addEventListener('readystatechange', () => {
 
     window.addEventListener('keyup', event => {
       if (event.key === 'Enter' && event.isTrusted) {
+        chatInput.blur()
         setTimeout(() => {
           isStopWritingBot = false
         }, 1000)
