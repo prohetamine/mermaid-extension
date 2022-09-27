@@ -149,6 +149,14 @@ document.addEventListener('readystatechange', () => {
     chatInput.addEventListener('focus', event => {
       if (event.isTrusted) {
         isStopWritingBot = true
+
+        const blurInterval = setInterval(() => {
+          if (chatInput.textContent.length === 0) {
+            chatInput.blur()
+            isStopWritingBot = false
+            clearInterval(blurInterval)
+          }
+        }, 5000)
       }
     })
 
