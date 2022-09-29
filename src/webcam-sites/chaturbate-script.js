@@ -98,7 +98,7 @@ const observer = new MutationObserver(async mutationRecords => {
     message = node.querySelector('.msg-text').innerText
   } catch (err) {}
 
-  if (htmlMessage.match(/:sdkflirjfirlevijergjeigjeiljgenr/)) {
+  if (htmlMessage.match(/­/)) {
     return
   }
 
@@ -250,7 +250,7 @@ document.addEventListener('readystatechange', () => {
                 await sleep(delay)
 
                 await sleeperChat()
-                chatInput.innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
+                chatInput.innerText = '­' + text
                 sendButton.click()
               }
             })
@@ -282,7 +282,7 @@ document.addEventListener('readystatechange', () => {
                   await sleep(delay)
 
                   await sleeperChat()
-                  chatInput.innerText = ':sdkflirjfirlevijergjeigjeiljgenr ' + text
+                  chatInput.innerText = '­' + text
                   sendButton.click()
                 }
               }
