@@ -136,69 +136,34 @@ const observer = new MutationObserver(async mutationRecords => {
   }, () => {})
 })
 
+
 document.addEventListener('readystatechange', () => {
+  const hiddenInput = document.createElement('input')
+      , hiddenButton = document.createElement('button')
+      , hiddenScript = document.createElement('script')
+
+  hiddenInput.hidden = true
+  hiddenButton.hidden = true
+
+  hiddenInput.id = 'hidden-input-mermaid-extension'
+  hiddenButton.id = 'hidden-button-mermaid-extension'
+
+  hiddenScript.type = 'text/javascript'
+  hiddenScript.text = `
+    const hime = document.querySelector('#hidden-input-mermaid-extension')
+        , hbme = document.querySelector('#hidden-button-mermaid-extension')
+
+    hbme.addEventListener('click', () => {
+      window.TSHandler.message_outbound.send_room_message(hime.value)
+    })
+  `
+
+  document.body.appendChild(hiddenInput)
+  document.body.appendChild(hiddenButton)
+  document.body.appendChild(hiddenScript)
+
   if (document.readyState === 'complete') {
-    const chat          = document.querySelector('div[class="msg-list-fvm message-list"]')
-        , chatInput     = document.querySelector('.chat-input-field')
-        , sendButton    = document.querySelector('[data-paction-name="Send"]')
-        , pmTab         = document.querySelector('[id="pm-tab-default"]')
-
-    let isStopWritingBot = false
-      , timeInputSleepId = 0
-
-    chatInput.addEventListener('focus', event => {
-      if (event.isTrusted) {
-        isStopWritingBot = true
-
-        const blurInterval = setInterval(() => {
-          if (chatInput.textContent.length === 0) {
-            chatInput.blur()
-            isStopWritingBot = false
-            clearInterval(blurInterval)
-          }
-        }, 5000)
-      }
-    })
-
-    chatInput.addEventListener('blur', event => {
-      if (event.isTrusted) {
-        isStopWritingBot = false
-      }
-    })
-
-    chatInput.addEventListener('paste', event => {
-      if (event.isTrusted) {
-        isStopWritingBot = true
-      }
-    })
-
-    sendButton.addEventListener('click', event => {
-      if (event.isTrusted) {
-        chatInput.blur()
-        setTimeout(() => {
-          isStopWritingBot = false
-        }, 1000)
-      }
-    })
-
-    window.addEventListener('keyup', event => {
-      if (event.key === 'Enter' && event.isTrusted) {
-        chatInput.blur()
-        setTimeout(() => {
-          isStopWritingBot = false
-        }, 1000)
-      }
-    })
-
-    const sleeperChat = () => new Promise(async res => {
-      for (;;) {
-        if (!(pmTab.classList.contains('active') || isStopWritingBot)) {
-          res()
-          return
-        }
-        await sleep(1000)
-      }
-    })
+    const chat = document.querySelector('div[class="msg-list-fvm message-list"]')
 
     if (chat) {
       observer.observe(chat, {
@@ -208,10 +173,8 @@ document.addEventListener('readystatechange', () => {
       })
 
       setTimeout(async () => {
-        await sleeperChat()
-
-        chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
-        sendButton.click()
+        hiddenInput.value = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat connected :kdlweeio43i34fi34fk3o4fk`
+        hiddenButton.click()
 
         chrome.storage.local.get(({ fetchCode }) => {
           if (fetchCode && fetchCode.chaturbateSendSocket && fetchCode.chaturbateSendSocket.host && fetchCode.chaturbateSendSocket.listen) {
@@ -221,27 +184,23 @@ document.addEventListener('readystatechange', () => {
             )
 
             socket.on('connect', async () => {
-              await sleeperChat()
-              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket connected :kdlweeio43i34fi34fk3o4fk`
-              sendButton.click()
+              hiddenInput.value = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket connected :kdlweeio43i34fi34fk3o4fk`
+              hiddenButton.click()
             })
 
             socket.io.on('reconnect_attempt', async (attempt) => {
-              await sleeperChat()
-              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :fwhfuwoefhweofwhu38423ho3823foh2`
-              sendButton.click()
+              hiddenInput.value = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :fwhfuwoefhweofwhu38423ho3823foh2`
+              hiddenButton.click()
             })
 
             socket.io.on('reconnect_failed', async () => {
-              await sleeperChat()
-              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :3498522fm24f2k4f842f98948f24f8`
-              sendButton.click()
+              hiddenInput.value = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket reconnect :3498522fm24f2k4f842f98948f24f8`
+              hiddenButton.click()
             })
 
             socket.io.on('error', async (error) => {
-              await sleeperChat()
-              chatInput.innerText = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket error :3498522fm24f2k4f842f98948f24f8`
-              sendButton.click()
+              hiddenInput.value = `:3823jd9238jd2893dj823d8923d Mermaid extension: chat Web Socket error :3498522fm24f2k4f842f98948f24f8`
+              hiddenButton.click()
             })
 
             socket.on(fetchCode.chaturbateSendSocket.listen, async messages => {
@@ -249,12 +208,10 @@ document.addEventListener('readystatechange', () => {
                 const { text, delay } = messages[m]
                 await sleep(delay)
 
-                await sleeperChat()
-
                 const fixEmotionText = (match => (match && match[0]) ? ' '+text : text)(text.match(/^:(\w|-|_|\d)+/))
 
-                chatInput.innerText = '­' + fixEmotionText
-                sendButton.click()
+                hiddenInput.value = '­' + fixEmotionText
+                hiddenButton.click()
               }
             })
           }
@@ -284,12 +241,10 @@ document.addEventListener('readystatechange', () => {
                   }
                   await sleep(delay)
 
-                  await sleeperChat()
-
                   const fixEmotionText = (match => (match && match[0]) ? ' '+text : text)(text.match(/^:(\w|-|_|\d)+/))
 
-                  chatInput.innerText = '­' + fixEmotionText
-                  sendButton.click()
+                  hiddenInput.value = '­' + fixEmotionText
+                  hiddenButton.click()
                 }
               }
             }
@@ -299,3 +254,5 @@ document.addEventListener('readystatechange', () => {
     }
   }
 })
+
+//
