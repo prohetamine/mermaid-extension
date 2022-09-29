@@ -250,7 +250,10 @@ document.addEventListener('readystatechange', () => {
                 await sleep(delay)
 
                 await sleeperChat()
-                chatInput.innerText = '­' + text
+
+                const fixEmotionText = (match => (match && match[0] && match[0] === text) ? ' '+text : text)(text.match(/:(\w|-|_|\d)+/))
+
+                chatInput.innerText = '­' + fixEmotionText
                 sendButton.click()
               }
             })
@@ -282,7 +285,10 @@ document.addEventListener('readystatechange', () => {
                   await sleep(delay)
 
                   await sleeperChat()
-                  chatInput.innerText = '­' + text
+
+                  const fixEmotionText = (match => (match && match[0] && match[0] === text) ? ' '+text : text)(text.match(/:(\w|-|_|\d)+/))
+
+                  chatInput.innerText = '­' + fixEmotionText
                   sendButton.click()
                 }
               }
