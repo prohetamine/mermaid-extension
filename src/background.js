@@ -327,6 +327,7 @@ const send = async (request, event) => {
   const attemptsError = request.attemptsError || 1
       , attemptsSleepError = request.attemptsSleepError || 3000
       , cancel = _request.cancel || 3000
+      , isReturn = _request.return !== undefined ? _request.return : true
       , delay = _request.delay || 0
       , condition = _request.if || false
 
@@ -371,9 +372,12 @@ const send = async (request, event) => {
 
       return { messages, id: event.id, contextId: event.contextId+_request.fetch.url, isOk: true }
     } catch (err) {
-      sendStack[event.contextId+_request.fetch.url] = sendStack[event.contextId+_request.fetch.url].filter(id => id !== event.id)
-      console.log(err)
-      await sleep(attemptsSleepError)
+			if (isReturn) {
+				sendStack[event.contextId+_request.fetch.url] = sendStack[event.contextId+_request.fetch.url].filter(id => id !== event.id)
+	      await sleep(attemptsSleepError)
+			} else {
+				return { messages: [], id: event.id, contextId: event.contextId+_request.fetch.url, isOk: true }
+			}
     }
   }
 
