@@ -154,7 +154,11 @@ document.addEventListener('readystatechange', () => {
         , hbme = document.querySelector('#hidden-button-mermaid-extension')
 
     hbme.addEventListener('click', () => {
-      window.TSHandler.message_outbound.send_room_message(hime.value)
+      if (window.location.href.match(/\\/b\\//)) {
+        window.TSHandler.message_outbound.send_room_message(hime.value)
+      } else {
+        console.log('[not your room]', hime.value)
+      }
     })
   `
 
