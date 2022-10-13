@@ -26,7 +26,7 @@ const usersTokenStack = {
   id: 1,
   socketType: 'message',
   hashId: 'ashdsdhfhfsdhdhedhasd',
-  platform: 'chaturbate',
+  platform: 'stripchat',
   modelUsername: 'username',
   pureEvent: 'base64',
   isParsedEvent: true,
@@ -70,45 +70,50 @@ document.addEventListener('readystatechange', () => {
           , hbme = document.querySelector('#hidden-button-mermaid-extension')
 
       hbme.addEventListener('click', () => {
-        if (window.location.href.match(/\\/b\\//)) {
-          window.TSHandler.message_outbound.send_room_message(hime.value)
+        if (document.querySelector('[id="broadcast-settings"]')) {
+          const input = document.querySelector('[class="input-message-wrapper__input"]')
+              , send = document.querySelector('button.btn-send')
+
+          let currentValue = input.value
+          const inputReactKey = Object.keys(input).find(key => key.match(/__reactProps/))
+          input[inputReactKey].onChange({ stopPropagation: () => {}, target: { value: hime.value } })
+          send.click()
+          input[inputReactKey].onChange({ stopPropagation: () => {}, target: { value: currentValue } })
         } else {
           console.log('[not your room]', hime.value)
         }
       })
 
-      const proxySockJS = window.SockJS
+      const proxyWebSocket = window.WebSocket
 
-      window.SockJS = function (...args) {
-        window.instanceSockJS = proxySockJS.call(this, ...args)
+      window.WebSocket = class {
+        constructor (...args) {
+          const instanceWebSocket = new proxyWebSocket(...args)
 
-        setTimeout(() => {
-          const onmessage = window.instanceSockJS.onmessage
-          window.instanceSockJS.onmessage = function (...args) {
-            window.postMessage({ to: 'mermaidExtension', from: 'chaturbate', socketType: 'message', data: args }, window.origin);
-            onmessage.call(this, ...args)
+          if (args[0].match(/comet2/)) {
+            console.log('connect', instanceWebSocket)
+
+            instanceWebSocket.addEventListener('message', ({ data }) => {
+              window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'message', data }, window.origin);
+            })
+
+            instanceWebSocket.addEventListener('error', error => {
+              window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'error', data: error }, window.origin);
+            })
+
+            instanceWebSocket.addEventListener('close', close => {
+              window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'close', data: close }, window.origin);
+            })
+
+            const send = instanceWebSocket.send
+            instanceWebSocket.send = function (...args) {
+              window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'send', data: args }, window.origin);
+              send.call(this, ...args)
+            }
           }
 
-          const onerror = window.instanceSockJS.onerror
-          window.instanceSockJS.onerror = function (...args) {
-            window.postMessage({ to: 'mermaidExtension', from: 'chaturbate', socketType: 'error', data: args }, window.origin);
-            onerror.call(this, ...args)
-          }
-
-          const onclose = window.instanceSockJS.onclose
-          window.instanceSockJS.onerror = function (...args) {
-            window.postMessage({ to: 'mermaidExtension', from: 'chaturbate', socketType: 'close', data: args }, window.origin);
-            onclose.call(this, ...args)
-          }
-
-          const send = window.instanceSockJS.send
-          window.instanceSockJS.send = function (...args) {
-            window.postMessage({ to: 'mermaidExtension', from: 'chaturbate', socketType: 'send', data: args }, window.origin);
-            send.call(this, ...args)
-          }
-        }, 1)
-
-        return instanceSockJS
+          return instanceWebSocket
+        }
       }
     `
 
@@ -120,11 +125,13 @@ document.addEventListener('readystatechange', () => {
       if (window.origin === event.origin && event.data && event.data.to === 'mermaidExtension') {
         EVENT_ID++
 
+        const data = JSON.parse(event.data.data)
+
         const id = EVENT_ID
             , socketType = event.data.socketType
-            , hashId = MD5(JSON.stringify({ platform: 'chaturbate', data: event.data.data }))
-            , platform = 'chaturbate'
-            , modelUsername = window.location.pathname.replace(/(\/b\/|\/)/, '').slice(0, -1)
+            , hashId = MD5(JSON.stringify({ platform: 'stripchat', data: event.data.data }))
+            , platform = 'stripchat'
+            , modelUsername = window.location.pathname.slice(1)
             , pureEvent = event.data.data
 
         let isParsedEvent = false // ok
@@ -135,14 +142,14 @@ document.addEventListener('readystatechange', () => {
           , isToken = false // ok
           , isRoomCount = false // ??
           , isRemovedMessage = false // ??
-          , isDisconnect = false // ok
-          , isConnect = false // ok
-          , isBan = false // ???
+          , isDisconnect = false // ??
+          , isConnect = false // ??
+          , isBan = false // ok
 
         let tokenCount = 0 // ok
           , username = '' // ok
           , message = '' // ok
-          , roomCount = 0 // ok
+          , roomCount = 0 // ??
           , user = {} // ok
           , model = {} // ok
           , notice = {} // ok
@@ -152,217 +159,153 @@ document.addEventListener('readystatechange', () => {
         }
 
         try {
-          const data = pureEvent[0]
+          if (data.subscriptionKey) {
+            //console.log('subscriptionKey', data.subscriptionKey)
 
-          console.log(data.type)
-
-          try {
-            const messageData = JSON.parse(data.data)
-
-            console.log(messageData.method)
-          } catch (e) {
-            console.log('none')
-          }
-
-          console.log(data)
-
-          /*
-            onKick
-            {
-              "type": "message",
-              "bubbles": false,
-              "cancelable": false,
-              "timeStamp": 1665193213711,
-              "data": "{\"args\":[\"acsafipubnicole\"],\"callback\":null,\"method\":\"onKick\"}"
-            }
-          */
-
-          /*
-            onSilence
-            {
-              "type": "message",
-              "bubbles": false,
-              "cancelable": false,
-              "timeStamp": 1665194504671,
-              "data": "{\"args\":[\"daykerfiso33\",\"voltica\"],\"callback\":null,\"method\":\"onSilence\"}"
+            if (data.subscriptionKey.match(/modelStatusChanged/)) {
+              //console.log(data)
             }
 
-          */
-
-          if (data.type === 'message') {
-            const messageData = JSON.parse(data.data)
-
-            if (messageData.method === 'onRoomMsg') {
-              username = messageData.args[0]
-
-              const parseMessage = JSON.parse(messageData.args[1])
-              message = parseMessage.m
-
-              if (username !== modelUsername) {
-                isUser = true
-                user = {
-                  spam: parseMessage['X-Spam'],
-                  good: parseMessage['X-Successful'],
-                  textColor: parseMessage.c,
-                  textFont: parseMessage.f,
-                  gender: parseMessage.gender,
-                  hasTokens: parseMessage.has_tokens,
-                  inFanclub: parseMessage.in_fanclub,
-                  isFollowing: parseMessage.is_following,
-                  isMod: parseMessage.is_mod,
-                  media: parseMessage.media,
-                  tippedAlotRecently: parseMessage.tipped_alot_recently,
-                  tippedRecently: parseMessage.tipped_recently,
-                  tippedTonsRecently: parseMessage.tipped_tons_recently,
-                  tippedMe: usersTokenStack[username] || 0
+            if (data.subscriptionKey.match(/userBanned/)) {
+              isBan = true
+              /*
+                {
+                  "ban": {
+                      "id": 36536598,
+                      "createdAt": "2022-10-07T15:24:36Z",
+                      "isDeleted": false,
+                      "moderatorId": 42965688,
+                      "bannedId": 92406005,
+                      "userId": 32721658,
+                      "isExpired": false,
+                      "expiredAt": "2022-10-08T15:24:36Z",
+                      "type": "mute",
+                      "isVisible": true,
+                      "isAnonymous": false
+                  },
+                  "banReason": null
                 }
-              } else {
-                isModel = true
-                model = {
-                  spam: parseMessage['X-Spam'],
-                  good: parseMessage['X-Successful'],
-                  textColor: parseMessage.c,
-                  textFont: parseMessage.f,
-                  gender: parseMessage.gender,
-                  hasTokens: parseMessage.has_tokens,
-                  inFanclub: parseMessage.in_fanclub,
-                  isFollowing: parseMessage.is_following,
-                  isMod: parseMessage.is_mod,
-                  media: parseMessage.media,
-                  tippedAlotRecently: parseMessage.tipped_alot_recently,
-                  tippedRecently: parseMessage.tipped_recently,
-                  tippedTonsRecently: parseMessage.tipped_tons_recently,
-                  tippedMe: usersTokenStack[username] || 0
-                }
+              */
+
+              isParsedEvent = false
+            }
+
+            if (data.subscriptionKey.match(/goalChanged/)) {
+              const goal = data.params.goal
+              isNotice = true
+              message = goal.description
+              notice = {
+                type: 'goalChanged',
+                goal: goal.goal,
+                isEnabled: goal.isEnabled,
+                left: goal.left,
+                spent: goal.spent
               }
 
-              isParsedEvent = true
+              isParsedEvent = false
             }
 
-            if (messageData.method === 'onNotify') {
-              const parseNotify = JSON.parse(messageData.args[0])
+            if (data.subscriptionKey.match(/newChatMessage/)) {
+              const msg = data.params.message
 
-              if (parseNotify.type === 'tip_alert') {
+              //console.log(msg.type)
+
+              if (msg.type === 'userBoughtContent') {
+                //console.log(msg)
+              }
+
+
+              if (msg.type === 'newKing') {
+                //console.log(msg)
+              }
+
+
+              if (msg.type === 'tip' || msg.type === 'privateTip') {
                 isToken = true
-                isAnon = parseNotify.is_anonymous_tip
-                tokenCount = parseNotify.amount
-                message = parseNotify.message || ''
+                tokenCount = msg.details.amount
+                message = msg.details.body
 
-                if (!isAnon) {
+                if (msg.details.isAnonymous) {
+                  isAnon = true
+                } else {
                   isUser = true
-                  username = parseNotify.from_username
+                  username = msg.userData.username
                   user = {
-                    hasTokens: parseNotify.has_tokens,
-                    inFanclub: parseNotify.in_fanclub,
-                    isFollowing: parseNotify.is_following,
-                    isMod: parseNotify.is_mod,
-                    tippedAlotRecently: parseNotify.tipped_alot_recently,
-                    tippedRecently: parseNotify.tipped_recently,
-                    tippedTonsRecently: parseNotify.tipped_tons_recently,
+                    ...msg.userData,
                     tippedMe: usersTokenStack[username] || 0
                   }
                 }
 
-                isParsedEvent = true
+                isParsedEvent = false
               }
 
-              if (parseNotify.type === 'appnotice') {
+              if (msg.type === 'goal') {
                 isNotice = true
-                message = parseNotify.msg.join('\n')
-
+                message = msg.details.body
                 notice = {
-                  foreground: parseNotify.foreground,
-                  weight: parseNotify.weight
+                  type: 'goal',
+                  goal: msg.details.goal,
+                  isEnabled: msg.details.isEnabled,
                 }
 
-                isParsedEvent = true
+                isParsedEvent = false
               }
 
-              if (parseNotify.type === 'room_entry') {
-                isConnect = true
-                username = parseNotify.username
+              if (msg.type === 'thresholdGoal') {
+                isNotice = true
+                message = msg.details.body
+                notice = {
+                  type: 'thresholdGoal',
+                  goal: msg.details.goal
+                }
+
+                isParsedEvent = false
+              }
+
+              if (msg.type === 'lovense') {
+                isNotice = true
+                message = msg.details.lovenseDetails.text
+                notice = {
+                  type: 'lovense',
+                  ...msg.details.lovenseDetails
+                }
+
+                isParsedEvent = false
+              }
+
+              if (msg.type === 'text') {
+                message = msg.details.body
+                username = msg.userData.username
 
                 if (username !== modelUsername) {
                   isUser = true
                   user = {
-                    exploringHashTag: parseNotify.exploringHashTag,
-                    hasTokens: parseNotify.has_tokens,
-                    inFanclub: parseNotify.in_fanclub,
-                    isMod: parseNotify.is_mod,
-                    tippedAlotRecently: parseNotify.tipped_alot_recently,
-                    tippedRecently: parseNotify.tipped_recently,
-                    tippedTonsRecently: parseNotify.tipped_tons_recently,
+                    ...msg.userData,
                     tippedMe: usersTokenStack[username] || 0
                   }
                 } else {
                   isModel = true
                   model = {
-                    exploringHashTag: parseNotify.exploringHashTag,
-                    hasTokens: parseNotify.has_tokens,
-                    inFanclub: parseNotify.in_fanclub,
-                    isMod: parseNotify.is_mod,
-                    tippedAlotRecently: parseNotify.tipped_alot_recently,
-                    tippedRecently: parseNotify.tipped_recently,
-                    tippedTonsRecently: parseNotify.tipped_tons_recently,
-                    tippedMe: usersTokenStack[username] || 0
+                    ...msg.userData
                   }
                 }
 
-                isParsedEvent = true
-              }
-
-              if (parseNotify.type === 'room_leave') {
-                isDisconnect = true
-                username = parseNotify.username
-
-                if (username !== modelUsername) {
-                  isUser = true
-                  user = {
-                    exploringHashTag: parseNotify.exploringHashTag,
-                    hasTokens: parseNotify.has_tokens,
-                    inFanclub: parseNotify.in_fanclub,
-                    isMod: parseNotify.is_mod,
-                    tippedAlotRecently: parseNotify.tipped_alot_recently,
-                    tippedRecently: parseNotify.tipped_recently,
-                    tippedTonsRecently: parseNotify.tipped_tons_recently,
-                    tippedMe: usersTokenStack[username] || 0
-                  }
-                } else {
-                  isModel = true
-                  model = {
-                    exploringHashTag: parseNotify.exploringHashTag,
-                    hasTokens: parseNotify.has_tokens,
-                    inFanclub: parseNotify.in_fanclub,
-                    isMod: parseNotify.is_mod,
-                    tippedAlotRecently: parseNotify.tipped_alot_recently,
-                    tippedRecently: parseNotify.tipped_recently,
-                    tippedTonsRecently: parseNotify.tipped_tons_recently,
-                    tippedMe: usersTokenStack[username] || 0
-                  }
-                }
-
-                isParsedEvent = true
+                isParsedEvent = false
               }
             }
-
-            if (messageData.method === 'onRoomCountUpdate') {
-              const parseRoomCount = JSON.parse(messageData.args[0])
-
-              isRoomCount = true
-              roomCount = parseRoomCount
-              isParsedEvent = true
-            }
+          } else {
+            isParsedEvent = false
           }
+
         } catch (e) {
           console.log(e, pureEvent)
-          isParsedEvent = false
         }
 
         if (message.match(/ֹ/)) {
           return false
         }
 
-        const chaturbateHttpEvent = {
+        const stripchatHttpEvent = {
           contextId,
           id,
           socketType,
@@ -392,10 +335,10 @@ document.addEventListener('readystatechange', () => {
           }
         }
 
-        console.log(chaturbateHttpEvent)
+        console.log(stripchatHttpEvent)
 
         chrome.storage.local.set({
-          chaturbateHttpEvent
+          stripchatHttpEvent
         })
       }
     })
@@ -405,12 +348,12 @@ document.addEventListener('readystatechange', () => {
     chrome.storage.local.onChanged.addListener(() => {
       chrome.storage.local.get(async storage => {
         const {
-          chaturbateHttpEventCallback = false
+          stripchatHttpEventCallback = false
         } = storage
 
-        if (chaturbateHttpEventCallback) {
-          for (let i = 0; i < chaturbateHttpEventCallback.length; i++) {
-            const event = chaturbateHttpEventCallback[i]
+        if (stripchatHttpEventCallback) {
+          for (let i = 0; i < stripchatHttpEventCallback.length; i++) {
+            const event = stripchatHttpEventCallback[i]
 
             if (event.isOk && (sendStack[event.contextId] ? !(sendStack[event.contextId].find(id => id === event.id)) : true)) {
               for (let m = 0; m < event.messages.length; m++) {
@@ -434,32 +377,32 @@ document.addEventListener('readystatechange', () => {
     })
 
     setTimeout(async () => {
-      console.log(`[Chaturbate] Mermaid extension: chat connected`)
+      console.log(`[Stripchat] Mermaid extension: chat connected`)
 
       chrome.storage.local.get(({ fetchCode }) => {
-        if (fetchCode && fetchCode.chaturbateSendSocket && fetchCode.chaturbateSendSocket.host && fetchCode.chaturbateSendSocket.listen) {
+        if (fetchCode && fetchCode.stripchatSendSocket && fetchCode.stripchatSendSocket.host && fetchCode.stripchatSendSocket.listen) {
           const socket = io(
-            fetchCode.chaturbateSendSocket.host,
-            fetchCode.chaturbateSendSocket.options
+            fetchCode.stripchatSendSocket.host,
+            fetchCode.stripchatSendSocket.options
           )
 
           socket.on('connect', async () =>
-            console.log(`[Chaturbate] Mermaid extension: chat Web Socket connected`)
+            console.log(`[Stripchat] Mermaid extension: chat Web Socket connected`)
           )
 
           socket.io.on('reconnect_attempt', async attempt =>
-            console.log(`[Chaturbate] Mermaid extension: chat Web Socket reconnect (${attempt})`)
+            console.log(`[Stripchat] Mermaid extension: chat Web Socket reconnect (${attempt})`)
           )
 
           socket.io.on('reconnect_failed', async () =>
-            console.log(`[Chaturbate] Mermaid extension: chat Web Socket reconnect`)
+            console.log(`[Stripchat] Mermaid extension: chat Web Socket reconnect`)
           )
 
           socket.io.on('error', async error =>
-            console.log(`[Chaturbate] Mermaid extension: chat Web Socket error ${error}`)
+            console.log(`[Stripchat] Mermaid extension: chat Web Socket error ${error}`)
           )
 
-          socket.on(fetchCode.chaturbateSendSocket.listen, async messages => {
+          socket.on(fetchCode.stripchatSendSocket.listen, async messages => {
             for (let m = 0; m < messages.length; m++) {
               const { text, delay } = messages[m]
               await sleep(delay)

@@ -15,8 +15,6 @@
 		root = freeGlobal;
 	}
 
-	/*--------------------------------------------------------------------------*/
-
 	var InvalidCharacterError = function(message) {
 		this.message = message;
 	};
@@ -163,37 +161,9 @@
 
 }(this));
 
-const sendStack = {
-  /* contextId */
-}
+const sendStack = {}
 
 const sleep = ms => new Promise(res => setTimeout(res, ms))
-
-const replacementRequest = (request, event) => {
-  const parser = (text, event) => {
-    const match = text.match(/\({[^\}]+}\)/)
-
-    if (match) {
-      const keys = (match+'').slice(8, -2).split('.')
-          , value = keys.reduce((event, key) => {
-              if (key === 'htmlMessage') {
-                return base64.encode(encodeURIComponent(event[key]))
-              }
-
-              return event[key]
-            }, event)
-      text = text.replace(match, value)
-    } else {
-      return text
-    }
-
-    return parser(text, event)
-  }
-
-  const text = JSON.stringify(request)
-
-  return JSON.parse(parser(text, event))
-}
 
 const executeCondition = {
   '>=': (a, b) => a >= b,
@@ -321,27 +291,57 @@ const ifParser = condition => {
   }
 }
 
-const send = async (request, event) => {
-  const _request = replacementRequest(request, event)
+const replacementRequest = (request, event) => {
+  const parser = (text, event) => {
+    const match = text.match(/\({[^\}]+}\)/)
 
-  const attemptsError = request.attemptsError || 1
+    if (match) {
+      const keys = (match+'').slice(8, -2).split('.')
+          , value = keys.reduce(
+											(event, key) => {
+												if (key === 'model' || key === 'user' || key === 'notice' || key === 'pureEvent') {
+													return base64.encode(JSON.stringify(event[key]))
+												}
+												return event[key]
+											}
+        							,
+											event
+										)
+      text = text.replace(match, value)
+    } else {
+      return text
+    }
+
+    return parser(text, event)
+  }
+
+  const text = JSON.stringify(request)
+
+	const json = parser(text, event)
+  return JSON.parse(json)
+}
+
+const send = async (request, event) => {
+	const _request = replacementRequest(request, event)
+
+	const attemptsError = request.attemptsError || 1
       , attemptsSleepError = request.attemptsSleepError || 3000
       , cancel = _request.cancel || 3000
       , isReturn = _request.return !== undefined ? _request.return : true
       , delay = _request.delay || 0
-      , condition = _request.if || false
+			, condition = _request.if || false
 
-  if (condition) {
-    const isСondition = ifParser(condition)
+	if (condition) {
+		const isСondition = ifParser(condition)
 
-    if (!isСondition) {
-      return
-    }
-  }
+		if (!isСondition) {
+			return
+		}
+	}
 
-  await sleep(delay)
+	await sleep(delay)
 
-  for (let i = 0; i < attemptsError; i++) {
+	for (let i = 0; i < attemptsError; i++) {
     const controller = new AbortController()
 
     const timeId = setTimeout(
@@ -364,6 +364,7 @@ const send = async (request, event) => {
     }
 
     try {
+			console.log('fetch', event.platform)
       const messages = await fetch(_request.fetch.url, {
         signal: controller.signal,
         ..._request.fetch
@@ -381,67 +382,59 @@ const send = async (request, event) => {
     }
   }
 
-  return { messages: [], id: event.id, contextId: event.contextId+_request.fetch.url, isOk: false }
+	return { messages: [], id: event.id, contextId: event.contextId+_request.fetch.url, isOk: false }
 }
 
 ;(async () => {
   chrome.storage.local.onChanged.addListener(() => {
 		chrome.storage.local.get(async storage => {
 			const {
-	      chaturbateEvent = false,
-	      bongacamsEvent = false,
-	      myfreecamsEvent = false,
-	      stripchatEvent = false,
+	      chaturbateHttpEvent = false,
+	      bongacamsHttpEvent = false,
+	      myfreecamsHttpEvent = false,
+	      stripchatHttpEvent = false,
 	      fetchCode = false
 	    } = storage
 
-			if (chaturbateEvent && fetchCode) {
-				await new Promise(async resolve => {
-					chrome.storage.local.set({
-		        chaturbateEventCallback: (
-		          await Promise.all(
-		            fetchCode.chaturbateEvent.map(request => send(request, chaturbateEvent))
-		          )
-		        ).filter(send => send)
-		      }, resolve)
+			if (chaturbateHttpEvent && fetchCode.chaturbateHttpEvent) {
+				chrome.storage.local.set({
+		      chaturbateHttpEventCallback: (
+		      	await Promise.all(
+		        	fetchCode.chaturbateHttpEvent.map(request => send(request, chaturbateHttpEvent))
+		        )
+		      ).filter(send => send)
 				})
 	    }
 
-	    if (bongacamsEvent && fetchCode) {
-				await new Promise(async resolve => {
-					chrome.storage.local.set({
-		        bongacamsEventCallback: (
-		          await Promise.all(
-		            fetchCode.bongacamsEvent.map(request => send(request, chaturbateEvent))
-		          )
-		        ).filter(send => send)
-		      }, resolve)
+			if (stripchatHttpEvent && fetchCode.stripchatHttpEvent) {
+				chrome.storage.local.set({
+		    	stripchatHttpEventCallback: (
+		      	await Promise.all(
+		        	fetchCode.stripchatHttpEvent.map(request => send(request, stripchatHttpEvent))
+		        )
+		      ).filter(send => send)
 				})
 	    }
 
-	    if (myfreecamsEvent && fetchCode) {
-				await new Promise(async resolve => {
-					chrome.storage.local.set({
-		        myfreecamsEventCallback: (
-		          await Promise.all(
-		            fetchCode.myfreecamsEvent.map(request => send(request, chaturbateEvent))
-		          )
-		        ).filter(send => send)
-		      }, resolve)
+			if (bongacamsHttpEvent && fetchCode.bongacamsHttpEvent) {
+				chrome.storage.local.set({
+		    	bongacamsHttpEventCallback: (
+		      	await Promise.all(
+		        	fetchCode.bongacamsHttpEvent.map(request => send(request, bongacamsHttpEvent))
+		        )
+		     	).filter(send => send)
 				})
 	    }
 
-	    if (stripchatEvent && fetchCode) {
-				await new Promise(async resolve => {
-					chrome.storage.local.set({
-		        stripchatEventCallback: (
-		          await Promise.all(
-		            fetchCode.stripchatEvent.map(request => send(request, chaturbateEvent))
-		          )
-		        ).filter(send => send)
-		      }, resolve)
+			if (myfreecamsHttpEvent && fetchCode.myfreecamsHttpEvent) {
+				chrome.storage.local.set({
+		    	myfreecamsHttpEventCallback: (
+		      	await Promise.all(
+		        	fetchCode.myfreecamsHttpEvent.map(request => send(request, myfreecamsHttpEvent))
+		        )
+		     	).filter(send => send)
 				})
 	    }
 		})
-  })
+	})
 })()
