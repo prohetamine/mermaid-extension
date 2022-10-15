@@ -8,8 +8,8 @@ const MD5 = function(r){function n(o){if(t[o])return t[o].exports;var e=t[o]={i:
  */
 r.exports=function(r){return null!=r&&(t(r)||o(r)||!!r._isBuffer)}},function(r,n,t){r.exports=t(1)}]);
 
-const contextId = parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000)
-let EVENT_ID = 0
+let contextId = parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000)
+  , EVENT_ID = 0
 
 const sendStack = {
   /* contextId */
@@ -19,6 +19,7 @@ const usersTokenStack = {
   /* contextId */
 }
 
+let currnetModelUsername = null
 
 /*
 {
@@ -149,6 +150,12 @@ document.addEventListener('readystatechange', () => {
 
         if (socketType === 'send') {
           return
+        }
+
+        if (currnetModelUsername !== modelUsername) {
+          currnetModelUsername = modelUsername
+          contextId = parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000)
+          EVENT_ID = 0
         }
 
         try {
