@@ -45,6 +45,7 @@ let currnetModelUsername = null
     isBan: false,
     tokenCount: 0,
     message: "",
+    tokenMessage: "",
     username: "",
     roomCount: 0,
     user: 'base64',
@@ -150,6 +151,7 @@ document.addEventListener('readystatechange', () => {
         let tokenCount = 0 // ok
           , username = '' // ok
           , message = '' // ok
+          , tokenMessage = '' // ok
           , roomCount = 0 // ??
           , user = {} // ok
           , model = {} // ok
@@ -230,7 +232,7 @@ document.addEventListener('readystatechange', () => {
               if (msg.type === 'tip' || msg.type === 'privateTip') {
                 isToken = true
                 tokenCount = msg.details.amount
-                message = msg.details.body
+                tokenMessage = msg.details.body || ''
 
                 if (msg.details.isAnonymous) {
                   isAnon = true
@@ -334,6 +336,7 @@ document.addEventListener('readystatechange', () => {
             isRoomCount,
             tokenCount,
             message,
+            tokenMessage,
             username,
             roomCount,
             user,

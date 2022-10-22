@@ -45,6 +45,7 @@ let currnetModelUsername = null
     isBan: false,
     tokenCount: 0,
     message: "",
+    tokenMessage: "",
     username: "",
     roomCount: 0,
     user: 'base64',
@@ -143,6 +144,7 @@ document.addEventListener('readystatechange', () => {
         let tokenCount = 0 // ok
           , username = '' // ok
           , message = '' // ok
+          , tokenMessage = '' // ok
           , roomCount = 0 // ok
           , user = {} // ok
           , model = {} // ok
@@ -253,7 +255,7 @@ document.addEventListener('readystatechange', () => {
                 isToken = true
                 isAnon = parseNotify.is_anonymous_tip
                 tokenCount = parseNotify.amount
-                message = parseNotify.message || ''
+                tokenMessage = parseNotify.message || ''
 
                 if (!isAnon) {
                   isUser = true
@@ -391,6 +393,7 @@ document.addEventListener('readystatechange', () => {
             isRoomCount,
             tokenCount,
             message,
+            tokenMessage,
             username,
             roomCount,
             user,
