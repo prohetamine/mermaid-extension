@@ -151,6 +151,7 @@ document.addEventListener('readystatechange', () => {
           , notice = {} // ok
 
         if (socketType === 'send') {
+          console.log('send', pureEvent)
           return
         }
 
