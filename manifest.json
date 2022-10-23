@@ -27,12 +27,12 @@
   "content_scripts": [
     {
       "run_at": "document_start",
-      "matches": ["https://chaturbate.com/*"],
+      "matches": ["https://chaturbate.com/*", "https://*.chaturbate.com/*"],
       "js": ["src/socket.io.js", "src/webcam-sites/chaturbate-script.js"]
     },
     {
       "run_at": "document_start",
-      "matches": ["https://mywebcamroom.com/*", "https://ru.stripchat.com/*"],
+      "matches": ["https://mywebcamroom.com/*", "https://*.stripchat.com/*", "https://stripchat.com/*"],
       "js": ["src/socket.io.js", "src/webcam-sites/stripchat-script.js"]
     }
   ]
