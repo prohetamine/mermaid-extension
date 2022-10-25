@@ -25,7 +25,7 @@
 ### Deep event key (parse event)
 
 | Chaturbate      | Event parse property | Data type | Default value    | Description    |
-| :---:           | :---:                | :---:     | :---:            | :---:          |
+| ---           | ---                | ---     | ---            | ---         |
 | ✅              | isModel              | Boolean    | false           | ... |
 | ✅              | isUser               | Boolean    | false           | ... |
 | ✅              | isAnon               | Boolean    | false           | ... |
