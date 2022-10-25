@@ -24,6 +24,11 @@ Mermaid Extension — [GitHub](https://github.com/prohetamine/mermaid-extension/
 
 ![documentation-map](https://github.com/prohetamine/mermaid-extension/blob/main/media/documentation-map.png)
 
+### Currently supported & all properties are enabled
+
+- Chaturbate
+- Stripchat
+
 
 
 ### Contacts
