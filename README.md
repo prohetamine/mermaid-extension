@@ -20,6 +20,12 @@ Mermaid Extension — [GitHub](https://github.com/prohetamine/mermaid-extension/
 
 «Mermaid Extension how to get a POST/GET request from esp32» — [Youtube](https://www.youtube.com/channel/UCFTKTphoCxkNU_88b-0Mq8g)
 
+### Network map or scheme of documentation sections
+
+![documentation-map](https://github.com/prohetamine/mermaid-extension/blob/main/media/documentation-map.png)
+
+
+
 ### Contacts
 
 My Telegram: [@prohetamine](https://t.me/prohetamine), [channel](https://t.me/prohetamines)
