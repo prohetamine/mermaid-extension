@@ -8,7 +8,6 @@
 | Chaturbate      | modelUsername     | String    | "prohetamine"    | ✅         | Username of the model |
 | Chaturbate      | pureEvent         | String    | "base64"         | ✅         | Sent as JSON to base64 |
 | Chaturbate      | isParsedEvent     | Boolean   | false            | ✅         | Is the event decrypted or is not supported by the regular parser (not all events are decrypted) |
-| ---           | ---             | ---     | ---            | ---      | ---          |
 | Stripchat       | contextId         | String    | "NNNN-NNNN-NNNN" | ✅         | The window ID is generated for the current window, it is reset when restarting or transitioning |
 | Stripchat       | id                | Number    | 1                | ✅         | The ordinal number of the event, always starts with 1 |
 | Stripchat       | socketType        | String    | "message"        | ✅         | <System has no definition> |
