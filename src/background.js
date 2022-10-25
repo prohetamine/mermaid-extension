@@ -292,32 +292,52 @@ const ifParser = condition => {
 }
 
 const replacementRequest = (request, event) => {
-  const parser = (text, event) => {
-    const match = text.match(/\({[^\}]+}\)/)
+  const parser = (routeData, event) => {
+		const match = routeData.match(/\({[^\}]+}\)/)
 
     if (match) {
       const keys = (match+'').slice(8, -2).split('.')
-          , value = keys.reduce(
-											(event, key) => {
-												if (key === 'model' || key === 'user' || key === 'notice' || key === 'pureEvent') {
-													return base64.encode(JSON.stringify(event[key]))
-												}
-												return event[key]
-											}
-        							,
-											event
-										)
-      text = text.replace(match, value)
+
+			const value = keys.reduce(
+				(event, key) => {
+					if (key === 'model' || key === 'user' || key === 'notice' || key === 'pureEvent') {
+						return base64.encode(JSON.stringify(event[key]))
+					}
+					return event[key]
+				}
+				,
+				event
+			)
+
+      routeData = routeData.replace(match, value)
     } else {
-      return text
+			const match = routeData.match(/bodyAsJSON/)
+			if (match) {
+
+				event.parseEvent.model = base64.encode(JSON.stringify(event.parseEvent.model))
+				event.parseEvent.user = base64.encode(JSON.stringify(event.parseEvent.user))
+				event.parseEvent.notice = base64.encode(JSON.stringify(event.parseEvent.notice))
+				event.pureEvent = base64.encode(JSON.stringify(event.parseEvent))
+
+				const data = JSON.parse(routeData)
+
+				routeData = JSON.stringify({
+					...data,
+					fetch: {
+						...data.fetch,
+						body: JSON.stringify(event)
+					}
+				})
+	  	} else {
+				return routeData
+			}
     }
 
-    return parser(text, event)
+    return parser(routeData, event)
   }
 
-  const text = JSON.stringify(request)
-
-	const json = parser(text, event)
+  const routeData = JSON.stringify(request)
+	const json = parser(routeData, event)
   return JSON.parse(json)
 }
 
@@ -364,7 +384,7 @@ const send = async (request, event) => {
     }
 
     try {
-			console.log('fetch', event.platform)
+			console.log(`[fetch] from platform: ${event.platform} to: ${_request.title || _request.fetch.url}`)
       const messages = await fetch(_request.fetch.url, {
         signal: controller.signal,
         ..._request.fetch
