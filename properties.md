@@ -8,7 +8,7 @@
 | ✅              | hashId            | String    | "md5"            | Md5 hash of the event will not always be unique |
 | ✅              | platform          | String    | "sitename"       | Depending on the site "chaturbate" or "stripchat" |
 | ✅              | modelUsername     | String    | "prohetamine"    | Username of the model |
-| ✅              | pureEvent         | String    | "Base64"         | Sent as JSON to base64 |
+| ✅              | pureEvent         | String    | Base64           | Sent as JSON to base64 |
 | ✅              | isParsedEvent     | Boolean   | false            | Is the event decrypted or is not supported by the regular parser (not all events are decrypted) |
 
 | Stripchat      | Event property    | Data type | Default value    | Description    |
@@ -19,7 +19,7 @@
 | ✅              | hashId            | String    | "md5"            | Md5 hash of the event will not always be unique |
 | ✅              | platform          | String    | "sitename"       | Depending on the site "chaturbate" or "stripchat" |
 | ✅              | modelUsername     | String    | "prohetamine"    | Username of the model |
-| ✅              | pureEvent         | String    | "Base64"         | Sent as JSON to base64 |
+| ✅              | pureEvent         | String    | Base64           | Sent as JSON to base64 |
 | ✅              | isParsedEvent     | Boolean   | false            | Is the event decrypted or is not supported by the regular parser (not all events are decrypted) |
 
 ### Deep event key (parse event)
@@ -38,9 +38,9 @@
 | ✅              | isConnect            | Boolean    | false           | ... |
 | ✅              | isRoomCount          | Boolean    | false           | ... |
 | ✅              | isBan                | Boolean    | false           | ... |
-| ✅              | user                 | String     | "Base64"        | ... |
-| ✅              | model                | String     | "Base64"        | ... |
-| ✅              | notice               | String     | "Base64"        | ... |
+| ✅              | user                 | String     | Base64          | ... |
+| ✅              | model                | String     | Base64          | ... |
+| ✅              | notice               | String     | Base64          | ... |
 | ✅              | tokenCount           | Number     | 0               | ... |
 | ✅              | message              | String     | ""              | ... |
 | ✅              | tokenMessage         | String     | ""              | ... |
