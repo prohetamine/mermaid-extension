@@ -29,6 +29,19 @@ Mermaid Extension — [GitHub](https://github.com/prohetamine/mermaid-extension/
 - Chaturbate
 - Stripchat
 
+### In development or minimum properties are supported
+
+Nothing at the moment
+
+### Mermaid-extension & script.mm
+
+The extension uses a special file with the extension .mm it needs to be loaded (if you use WebSocket, you need to reload the page)
+
+#### API
+
+You can pass the following [properties](https://github.con) (they are identical for all sites, but some may not be supported and will always be sent with the default value)
+
+
 
 
 ### Contacts
