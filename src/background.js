@@ -291,6 +291,23 @@ const ifParser = condition => {
   }
 }
 
+const replaceValueByValue = (value, value2, object) => {
+  return Object.keys(object).reduce((ctx, _key) => {
+    if (object[_key].match && object[_key].match(value)) {
+      ctx[_key] = object[_key].replace(value, value2)
+      return ctx
+    } else {
+      if (object[_key] instanceof Object && typeof(object[_key]) === 'object') {
+        ctx[_key] = replaceValueByValue(value, value2, object[_key])
+        return ctx
+      } else {
+        ctx = { ...object, ...ctx }
+        return ctx
+      }
+    }
+  }, {})
+}
+
 const replacementRequest = (request, event) => {
   const parser = (routeData, event) => {
 		const match = routeData.match(/\({[^\}]+}\)/)
@@ -303,17 +320,27 @@ const replacementRequest = (request, event) => {
 					if (key === 'model' || key === 'user' || key === 'notice' || key === 'pureEvent') {
 						return base64.encode(JSON.stringify(event[key]))
 					}
+
+					if (key === 'message') {
+						return event[key].replace(/"/gi, '\\"')
+					}
+
 					return event[key]
 				}
 				,
 				event
 			)
 
-      routeData = routeData.replace(match, value)
+      routeData = JSON.stringify(
+				replaceValueByValue(
+					match+'',
+					value,
+					JSON.parse(routeData)
+				)
+			)
     } else {
 			const match = routeData.match(/bodyAsJSON/)
 			if (match) {
-
 				event.parseEvent.model = base64.encode(JSON.stringify(event.parseEvent.model))
 				event.parseEvent.user = base64.encode(JSON.stringify(event.parseEvent.user))
 				event.parseEvent.notice = base64.encode(JSON.stringify(event.parseEvent.notice))
