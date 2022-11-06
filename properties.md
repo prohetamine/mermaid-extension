@@ -26,23 +26,21 @@
 
 | Chaturbate      | Event parse property | Data type | Default value    | Description    |
 | :---:           | ---                  | :---:     | :---:            | ---            |
-| ✅              | isModel              | Boolean    | false           | ... |
-| ✅              | isUser               | Boolean    | false           | ... |
-| ✅              | isAnon               | Boolean    | false           | ... |
-| ✅              | isNotice             | Boolean    | false           | ... |
-| ✅              | isToken              | Boolean    | false           | ... |
-| ✅              | isRoomCount          | Boolean    | false           | ... |
-| ✅              | isToken              | Boolean    | false           | ... |
-| ✅              | isRemovedMessage     | Boolean    | false           | ... |
-| ✅              | isDisconnect         | Boolean    | false           | ... |
-| ✅              | isConnect            | Boolean    | false           | ... |
-| ✅              | isRoomCount          | Boolean    | false           | ... |
-| ✅              | isBan                | Boolean    | false           | ... |
-| ✅              | user                 | String     | Base64          | ... |
-| ✅              | model                | String     | Base64          | ... |
-| ✅              | notice               | String     | Base64          | ... |
-| ✅              | tokenCount           | Number     | 0               | ... |
-| ✅              | message              | String     | ""              | ... |
-| ✅              | tokenMessage         | String     | ""              | ... |
-| ✅              | username             | String     | ""              | ... |
-| ✅              | roomCount            | Number     | 0               | ... |
+| ✅              | isModel              | Boolean    | false           | Initial event model |
+| ✅              | isUser               | Boolean    | false           | Initial event user |
+| ✅              | isAnon               | Boolean    | false           | Initial event anonymous |
+| ✅              | isNotice             | Boolean    | false           | Initial event chaturbate bot |
+| ✅              | isToken              | Boolean    | false           | Has tokens contains username and user or anonymous |
+| ✅              | isConnect            | Boolean    | false           | Connect user in room contains username and user |
+| ✅              | isDisconnect         | Boolean    | false           | Disconnect user in room contains username and user |
+| ✅              | isRoomCount          | Boolean    | false           | Event has room count users |
+| ✅              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
+| ✅              | isBan                | Boolean    | false           | User ban contains username and user |
+| ✅              | user                 | String     | Base64          | User details |
+| ✅              | model                | String     | Base64          | Model details |
+| ✅              | notice               | String     | Base64          | Notice details |
+| ✅              | tokenCount           | Number     | 0               | Tokens count in event |
+| ✅              | message              | String     | Base64          | User, model, notice messages |
+| ✅              | tokenMessage         | String     | Base64          | If event has token and user write private message |
+| ✅              | username             | String     | ""              | Username model and user |
+| ✅              | roomCount            | Number     | 0               | Contains count users in room |
