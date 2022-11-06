@@ -36,8 +36,8 @@
 | ✅              | isConnect            | Boolean    | false           | Connect user in room contains username and user |
 | ✅              | isDisconnect         | Boolean    | false           | Disconnect user in room contains username and user |
 | ✅              | isRoomCount          | Boolean    | false           | Event has room count users |
-| x              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
-| x              | isBan                | Boolean    | false           | User ban contains username and user |
+| ⏳              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
+| ⏳              | isBan                | Boolean    | false           | User ban contains username and user |
 | ✅              | user                 | String     | Base64          | User details |
 | ✅              | model                | String     | Base64          | Model details |
 | ✅              | notice               | String     | Base64          | Notice details |
@@ -56,11 +56,11 @@
 | ✅              | isAnon               | Boolean    | false           | Initial event anonymous |
 | ✅              | isNotice             | Boolean    | false           | Initial event stripchat bot |
 | ✅              | isToken              | Boolean    | false           | Has tokens contains username and user or anonymous |
-| x              | isConnect            | Boolean    | false           | Connect user in room contains username and user |
-| x              | isDisconnect         | Boolean    | false           | Disconnect user in room contains username and user |
-| x              | isRoomCount          | Boolean    | false           | Event has room count users |
-| x              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
-| x              | isBan                | Boolean    | false           | User ban contains username and user |
+| ⏳              | isConnect            | Boolean    | false           | Connect user in room contains username and user |
+| ⏳              | isDisconnect         | Boolean    | false           | Disconnect user in room contains username and user |
+| ⏳              | isRoomCount          | Boolean    | false           | Event has room count users |
+| ⏳              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
+| ⏳              | isBan                | Boolean    | false           | User ban contains username and user |
 | ✅              | user                 | String     | Base64          | User details |
 | ✅              | model                | String     | Base64          | Model details |
 | ✅              | notice               | String     | Base64          | Notice details |
@@ -68,4 +68,4 @@
 | ✅              | message              | String     | Base64          | User, model, notice messages |
 | ✅              | tokenMessage         | String     | Base64          | If event has token and user write private message |
 | ✅              | username             | String     | ""              | Username model and user |
-| x              | roomCount            | Number     | 0               | Contains count users in room |
+| ⏳              | roomCount            | Number     | 0               | Contains count users in room |
