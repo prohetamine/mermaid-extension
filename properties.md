@@ -10,6 +10,7 @@
 | ✅              | modelUsername     | String    | "prohetamine"    | Username of the model |
 | ✅              | pureEvent         | String    | Base64           | Sent as JSON to base64 |
 | ✅              | isParsedEvent     | Boolean   | false            | Is the event decrypted or is not supported by the regular parser (not all events are decrypted) |
+| ✅              | parseEvent        | Object    | { ... }          | Is the event decrypted or is not supported by the regular parser (not all events are decrypted) |
 
 | Stripchat      | Event property    | Data type | Default value    | Description    |
 | :---:          | ---               | :---:     | :---:            | ---            |
@@ -21,6 +22,7 @@
 | ✅              | modelUsername     | String    | "prohetamine"    | Username of the model |
 | ✅              | pureEvent         | String    | Base64           | Sent as JSON to base64 |
 | ✅              | isParsedEvent     | Boolean   | false            | Is the event decrypted or is not supported by the regular parser (not all events are decrypted) |
+| ✅              | parseEvent        | Object    | { ... }            | Is the event decrypted or is not supported by the regular parser (not all events are decrypted) |
 
 ### Deep event key (parse event)
 
