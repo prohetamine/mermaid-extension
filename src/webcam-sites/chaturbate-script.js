@@ -48,7 +48,6 @@ try {
 
   document.addEventListener('readystatechange', async () => {
     if (document.readyState === 'interactive' && document.body.parentElement.textContent.match(/chaturbate/gi)) {
-      alert('chaturbate')
       window.hiddenInput = document.createElement('input')
       window.hiddenButton = document.createElement('button')
       window.hiddenScript = document.createElement('script')
