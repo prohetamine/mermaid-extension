@@ -1,3 +1,7 @@
+* {
+  overflow: hidden;
+}
+
 html,body {
   padding: 0px;
   margin: 0px;
@@ -10,10 +14,6 @@ b {
   font-weight: 500;
 }
 
-#root {
-  overflow-y: scroll;
-}
-
 #root,#main {
   width: 700px;
   height: 500px;
@@ -23,7 +23,6 @@ b {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 2395px;
 }
 
 .nav {

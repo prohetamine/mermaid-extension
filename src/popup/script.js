@@ -36,9 +36,6 @@ addScript.addEventListener('change', (event) => {
   }
 })
 
-readApi.addEventListener('click', () => {
-  document.querySelector('#root').scrollTo({
-    top: 400,
-    behavior: 'smooth'
-  })
-})
+readApi.addEventListener('click', () =>
+  window.open('https://github.com/prohetamine/mermaid-extension')
+)
