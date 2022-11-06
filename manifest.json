@@ -38,7 +38,7 @@
       "js": [
         "src/libs/sleep.js",
         "src/libs/md5.js",
-        "src/socket.io.js",
+        "src/libs/socket.io.js",
         "src/webcam-sites/chaturbate-script.js",
         "src/webcam-sites/stripchat-script.js"
       ]
