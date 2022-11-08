@@ -345,7 +345,7 @@ try {
       })
     }
 
-    if (document.readyState === 'complete') {
+    if (document.readyState === 'complete' && document.body.parentElement.textContent.match(/stripchat/gi)) {
       chrome.storage.local.onChanged.addListener(() => {
         chrome.storage.local.get(async storage => {
           const {
@@ -402,7 +402,7 @@ try {
             socket.io.on('error', async error =>
               console.log(`[Stripchat] Mermaid extension: chat Web Socket error ${error}`)
             )
-
+            
             socket.on(fetchCode.stripchatSendSocket.listen, async messages => {
               for (let m = 0; m < messages.length; m++) {
                 const { text, delay } = messages[m]

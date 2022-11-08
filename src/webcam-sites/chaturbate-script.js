@@ -403,7 +403,7 @@ try {
       })
     }
 
-    if (document.readyState === 'complete') {
+    if (document.readyState === 'complete' && document.body.parentElement.textContent.match(/chaturbate/gi)) {
       chrome.storage.local.onChanged.addListener(() => {
         chrome.storage.local.get(async storage => {
           const {
