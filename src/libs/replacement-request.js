@@ -8,7 +8,12 @@ const replacementRequest = (request, event) => {
 			const value = keys.reduce(
 				(event, key) => {
 					if (key === 'model' || key === 'user' || key === 'notice' || key === 'pureEvent' || key === 'message' || key === 'tokenMessage') {
-						return base64.encode(JSON.stringify(event[key]))
+            try {
+              return base64.encode(JSON.stringify(event[key].split('').map(e => e.charCodeAt())))
+            } catch (err) {
+              console.log(err)
+              return base64.encode(JSON.stringify(''))
+            }
 					}
 					return event[key]
 				}
@@ -26,12 +31,12 @@ const replacementRequest = (request, event) => {
     } else {
 			const match = routeData.match(/bodyAsJSON/)
 			if (match) {
-				event.parseEvent.model = base64.encode(JSON.stringify(event.parseEvent.model))
-				event.parseEvent.user = base64.encode(JSON.stringify(event.parseEvent.user))
-				event.parseEvent.notice = base64.encode(JSON.stringify(event.parseEvent.notice))
-				event.parseEvent.message = base64.encode(JSON.stringify(event.parseEvent.message))
-				event.parseEvent.tokenMessage = base64.encode(JSON.stringify(event.parseEvent.tokenMessage))
-				event.pureEvent = base64.encode(JSON.stringify(event.parseEvent))
+				event.parseEvent.model = base64.encode(JSON.stringify(event.parseEvent.model).split('').map(e => e.charCodeAt()))
+				event.parseEvent.user = base64.encode(JSON.stringify(event.parseEvent.user).split('').map(e => e.charCodeAt()))
+				event.parseEvent.notice = base64.encode(JSON.stringify(event.parseEvent.notice).split('').map(e => e.charCodeAt()))
+				event.parseEvent.message = base64.encode(JSON.stringify(event.parseEvent.message).split('').map(e => e.charCodeAt()))
+				event.parseEvent.tokenMessage = base64.encode(JSON.stringify(event.parseEvent.tokenMessage).split('').map(e => e.charCodeAt()))
+				event.pureEvent = base64.encode(JSON.stringify(event.parseEvent).split('').map(e => e.charCodeAt()))
 
 				const data = JSON.parse(routeData)
 

@@ -27,20 +27,24 @@ app.get('/events', (req, res) => {
 
   res.setHeader('Access-Control-Allow-Origin', '*')
 
-  res.send(
-    JSON.stringify([{
-      delay: 500,
-      text: 'hello!'
-    }])
-  )
+  if (req.query.data.match('username: ')) {
+    res.send(
+      JSON.stringify([{
+        delay: 500,
+        text: 'hello!'
+      }])
+    )
+  } else {
+    res.send(
+      JSON.stringify([])
+    )
+  }
 })
 
 io.on('connection', socket => {
   setInterval(() => {
-    io.sockets.emit('chat-chaturbate', [{ text: `WebSocket date: ${(d => `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`)(new Date())}`, delay: 0 }])
+    socket.emit('chat-chaturbate', [{ text: `WebSocket date: ${(d => `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`)(new Date())}`, delay: 0 }])
   }, 5000)
 })
 
-
-
-app.listen(8888)
+server.listen(8888)

@@ -1,6 +1,4 @@
 try {
-  const webcamSiteIdentifyNode = '.'
-
   let contextId = parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000) + '-' + parseInt(Math.random() * 100000)
     , EVENT_ID = 0
 

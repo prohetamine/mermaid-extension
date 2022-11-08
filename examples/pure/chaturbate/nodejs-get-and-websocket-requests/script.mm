@@ -27,7 +27,7 @@
   },{
     "title": "chaturbate username",
     "fetch": {
-      "url": "http://localhost:8888/events?data=modelUsername: ({event.parseEvent.username})"
+      "url": "http://localhost:8888/events?data=username: ({event.parseEvent.username})"
     },
     "cancel": 13000
   },{
