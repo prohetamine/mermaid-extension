@@ -336,6 +336,8 @@ try {
             }
           }
 
+          console.log(stripchatHttpEvent)
+
           chrome.storage.local.set({
             stripchatHttpEvent
           })
