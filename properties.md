@@ -60,7 +60,7 @@
 | ⏳              | isDisconnect         | Boolean    | false           | Disconnect user in room contains username and user |
 | ⏳              | isRoomCount          | Boolean    | false           | Event has room count users |
 | ⏳              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
-| ⏳              | isBan                | Boolean    | false           | User ban contains username and user |
+| ⚠️              | isBan                | Boolean    | false           | User ban contains NONE |
 | ✅              | user                 | String     | Base64          | User details |
 | ✅              | model                | String     | Base64          | Model details |
 | ✅              | notice               | String     | Base64          | Notice details |
