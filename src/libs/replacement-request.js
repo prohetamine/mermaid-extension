@@ -9,7 +9,6 @@ const replacementRequest = (request, event) => {
 				(event, key) => {
 					if (key === 'model' || key === 'user' || key === 'notice' || key === 'pureEvent' || key === 'message' || key === 'tokenMessage') {
             try {
-              console.log(key === 'pureEvent', key, event[key])
               return base64.encode(JSON.stringify(event[key]).split('').map(e => e.charCodeAt()))
             } catch (err) {
               console.log(err)
