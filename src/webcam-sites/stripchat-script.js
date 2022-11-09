@@ -187,7 +187,7 @@ try {
                   }
                 */
 
-                isParsedEvent = false
+                isParsedEvent = true
               }
 
               if (data.subscriptionKey.match(/goalChanged/)) {
@@ -202,7 +202,7 @@ try {
                   spent: goal.spent
                 }
 
-                isParsedEvent = false
+                isParsedEvent = true
               }
 
               if (data.subscriptionKey.match(/newChatMessage/)) {
@@ -236,7 +236,7 @@ try {
                     }
                   }
 
-                  isParsedEvent = false
+                  isParsedEvent = true
                 }
 
                 if (msg.type === 'goal') {
@@ -248,7 +248,7 @@ try {
                     isEnabled: msg.details.isEnabled,
                   }
 
-                  isParsedEvent = false
+                  isParsedEvent = true
                 }
 
                 if (msg.type === 'thresholdGoal') {
@@ -259,7 +259,7 @@ try {
                     goal: msg.details.goal
                   }
 
-                  isParsedEvent = false
+                  isParsedEvent = true
                 }
 
                 if (msg.type === 'lovense') {
@@ -270,7 +270,7 @@ try {
                     ...msg.details.lovenseDetails
                   }
 
-                  isParsedEvent = false
+                  isParsedEvent = true
                 }
 
                 if (msg.type === 'text') {
@@ -290,7 +290,7 @@ try {
                     }
                   }
 
-                  isParsedEvent = false
+                  isParsedEvent = true
                 }
               }
             } else {
@@ -335,8 +335,6 @@ try {
               notice
             }
           }
-
-          console.log(stripchatHttpEvent)
 
           chrome.storage.local.set({
             stripchatHttpEvent
@@ -402,7 +400,7 @@ try {
             socket.io.on('error', async error =>
               console.log(`[Stripchat] Mermaid extension: chat Web Socket error ${error}`)
             )
-            
+
             socket.on(fetchCode.stripchatSendSocket.listen, async messages => {
               for (let m = 0; m < messages.length; m++) {
                 const { text, delay } = messages[m]
