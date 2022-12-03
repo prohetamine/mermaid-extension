@@ -59,33 +59,34 @@ try {
 
       hiddenScript.type = 'text/javascript'
       hiddenScript.text = `
-        const hime = document.querySelector('#hidden-input-mermaid-extension')
-            , hbme = document.querySelector('#hidden-button-mermaid-extension')
-
-        let id = 2
-
-        hbme.addEventListener('click', () => {
-          if (document.querySelector('[id="js-chat_general"]')) {
-            let currentValue = hime.value
-            window.instanceWebSocket.send(
-              JSON.stringify({
-                "id":id,
-                "name":"ChatModule.sendMessage",
-                "args":["public-chat",currentValue,"key",null,true]
-              })
-            )
-          } else {
-            console.log('[not your room]', hime.value)
-          }
-        })
-
         const proxyWebSocket = window.WebSocket
 
         window.WebSocket = class {
           constructor (...args) {
-            window.instanceWebSocket = new proxyWebSocket(...args)
-
+            const instanceWebSocket = new proxyWebSocket(...args)
+            
             if (args[0].match(/\.bcccdn\./)) {
+              const hime = document.querySelector('#hidden-input-mermaid-extension')
+                  , hbme = document.querySelector('#hidden-button-mermaid-extension')
+
+              let id = 2
+
+              hbme.addEventListener('click', () => {
+                if (document.querySelector('[id="js-chat_general"]')) {
+                  let currentValue = hime.value
+                  console.log(hime.value)
+                  instanceWebSocket.send(
+                    JSON.stringify({
+                      "id":id,
+                      "name":"ChatModule.sendMessage",
+                      "args":["public-chat",currentValue,"key",null,true]
+                    })
+                  )
+                } else {
+                  console.log('[not your room]', hime.value)
+                }
+              })
+
               console.log('connect', instanceWebSocket)
 
               instanceWebSocket.addEventListener('message', ({ data }) => {
