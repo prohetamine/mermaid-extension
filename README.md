@@ -27,11 +27,11 @@ Mermaid Extension — [GitHub](https://github.com/prohetamine/mermaid-extension/
 ### Currently supported & all properties are enabled
 
 - Chaturbate
-- Stripchat
+- Stripchat/xHamsterLive
 
 ### In development or minimum properties are supported
 
-Nothing at the moment
+Bongacams
 
 ### Mermaid-extension & script.mm
 
