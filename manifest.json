@@ -40,7 +40,7 @@
         "src/libs/md5.js",
         "src/libs/socket.io.js",
         "src/webcam-sites/chaturbate-script.js",
-        "src/webcam-sites/stripchat-xhamster-script.js",
+        "src/webcam-sites/stripchat-script.js",
         "src/webcam-sites/bongacams-script.js"
       ]
     }
