@@ -62,16 +62,18 @@ try {
         const hime = document.querySelector('#hidden-input-mermaid-extension')
             , hbme = document.querySelector('#hidden-button-mermaid-extension')
 
-        hbme.addEventListener('click', () => {
-          if (document.querySelector('[id="broadcast-settings"]')) {
-            const input = document.querySelector('[class="input-message-wrapper__input"]')
-                , send = document.querySelector('button.btn-send')
+        let id = 2
 
-            let currentValue = input.value
-            const inputReactKey = Object.keys(input).find(key => key.match(/__reactProps/))
-            input[inputReactKey].onChange({ stopPropagation: () => {}, target: { value: hime.value } })
-            send.click()
-            input[inputReactKey].onChange({ stopPropagation: () => {}, target: { value: currentValue } })
+        hbme.addEventListener('click', () => {
+          if (document.querySelector('[id="js-chat_general"]')) {
+            let currentValue = hime.value
+            window.instanceWebSocket.send(
+              JSON.stringify({
+                "id":id,
+                "name":"ChatModule.sendMessage",
+                "args":["public-chat",currentValue,"key",null,true]
+              })
+            )
           } else {
             console.log('[not your room]', hime.value)
           }
@@ -81,12 +83,13 @@ try {
 
         window.WebSocket = class {
           constructor (...args) {
-            const instanceWebSocket = new proxyWebSocket(...args)
+            window.instanceWebSocket = new proxyWebSocket(...args)
 
             if (args[0].match(/\.bcccdn\./)) {
               console.log('connect', instanceWebSocket)
 
               instanceWebSocket.addEventListener('message', ({ data }) => {
+                id++
                 window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'message', data }, window.origin);
               })
 
@@ -275,7 +278,7 @@ try {
       })
 
       setTimeout(async () => {
-        console.log(`[Stripchat] Mermaid extension: chat connected`)
+        console.log(`[Bongacams] Mermaid extension: chat connected`)
 
         chrome.storage.local.get(({ fetchCode }) => {
           if (fetchCode && fetchCode.bongacamsSendSocket && fetchCode.bongacamsSendSocket.host && fetchCode.bongacamsSendSocket.listen) {
@@ -285,19 +288,19 @@ try {
             )
 
             socket.on('connect', async () =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket connected`)
+              console.log(`[Bongacams] Mermaid extension: chat Web Socket connected`)
             )
 
             socket.io.on('reconnect_attempt', async attempt =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket reconnect (${attempt})`)
+              console.log(`[Bongacams] Mermaid extension: chat Web Socket reconnect (${attempt})`)
             )
 
             socket.io.on('reconnect_failed', async () =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket reconnect`)
+              console.log(`[Bongacams] Mermaid extension: chat Web Socket reconnect`)
             )
 
             socket.io.on('error', async error =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket error ${error}`)
+              console.log(`[Bongacams] Mermaid extension: chat Web Socket error ${error}`)
             )
 
             socket.on(fetchCode.bongacamsSendSocket.listen, async messages => {
@@ -307,8 +310,8 @@ try {
 
                 const fixEmotionText = (match => (match && match[0]) ? ' '+text : text)(text.match(/^:(\w|-|_|\d)+/))
 
-                /*hiddenInput.value = 'ֹ' + fixEmotionText
-                hiddenButton.click()*/
+                hiddenInput.value = 'ֹ' + fixEmotionText
+                hiddenButton.click()
               }
             })
           }
