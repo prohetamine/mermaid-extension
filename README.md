@@ -27,7 +27,8 @@ Mermaid Extension — [GitHub](https://github.com/prohetamine/mermaid-extension/
 ### Currently supported & all properties are enabled
 
 - Chaturbate
-- Stripchat/xHamsterLive
+- Stripchat
+- xHamsterLive
 
 ### In development or minimum properties are supported
 
