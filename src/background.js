@@ -94,6 +94,7 @@ const send = async (request, event) => {
 	      bongacamsHttpEvent = false,
 	      myfreecamsHttpEvent = false,
 	      stripchatHttpEvent = false,
+	      xhamsterHttpEvent = false,
 	      fetchCode = false
 	    } = storage
 
