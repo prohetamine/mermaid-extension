@@ -18,7 +18,7 @@ try {
     id: 1,
     socketType: 'message',
     hashId: 'ashdsdhfhfsdhdhedhasd',
-    platform: 'stripchat',
+    platform: 'xhamster',
     modelUsername: 'username',
     pureEvent: 'base64',
     isParsedEvent: true,
@@ -86,20 +86,20 @@ try {
               console.log('connect', instanceWebSocket)
 
               instanceWebSocket.addEventListener('message', ({ data }) => {
-                window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'message', data }, window.origin);
+                window.postMessage({ to: 'mermaidExtension', from: 'xhamster', socketType: 'message', data }, window.origin);
               })
 
               instanceWebSocket.addEventListener('error', error => {
-                window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'error', data: error }, window.origin);
+                window.postMessage({ to: 'mermaidExtension', from: 'xhamster', socketType: 'error', data: error }, window.origin);
               })
 
               instanceWebSocket.addEventListener('close', close => {
-                window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'close', data: close }, window.origin);
+                window.postMessage({ to: 'mermaidExtension', from: 'xhamster', socketType: 'close', data: close }, window.origin);
               })
 
               const send = instanceWebSocket.send
               instanceWebSocket.send = function (...args) {
-                window.postMessage({ to: 'mermaidExtension', from: 'stripchat', socketType: 'send', data: args }, window.origin);
+                window.postMessage({ to: 'mermaidExtension', from: 'xhamster', socketType: 'send', data: args }, window.origin);
                 send.call(this, ...args)
               }
             }
@@ -121,8 +121,8 @@ try {
 
           const id = EVENT_ID
               , socketType = event.data.socketType
-              , hashId = MD5(JSON.stringify({ platform: 'stripchat', data: event.data.data }))
-              , platform = 'stripchat'
+              , hashId = MD5(JSON.stringify({ platform: 'xhamster', data: event.data.data }))
+              , platform = 'xhamster'
               , modelUsername = window.location.pathname.slice(1)
               , pureEvent = event.data.data
 
@@ -304,7 +304,7 @@ try {
             return false
           }
 
-          const stripchatHttpEvent = {
+          const xhamsterHttpEvent = {
             contextId,
             id,
             socketType,
@@ -335,10 +335,10 @@ try {
             }
           }
 
-          console.log(stripchatHttpEvent)
+          console.log(xhamsterHttpEvent)
 
           chrome.storage.local.set({
-            stripchatHttpEvent
+            xhamsterHttpEvent
           })
         }
       })
@@ -348,12 +348,12 @@ try {
       chrome.storage.local.onChanged.addListener(() => {
         chrome.storage.local.get(async storage => {
           const {
-            stripchatHttpEventCallback = false
+            xhamsterHttpEventCallback = false
           } = storage
 
-          if (stripchatHttpEventCallback) {
-            for (let i = 0; i < stripchatHttpEventCallback.length; i++) {
-              const event = stripchatHttpEventCallback[i]
+          if (xhamsterHttpEventCallback) {
+            for (let i = 0; i < xhamsterHttpEventCallback.length; i++) {
+              const event = xhamsterHttpEventCallback[i]
 
               if (event.isOk && (sendStack[event.contextId] ? !(sendStack[event.contextId].find(id => id === event.id)) : true)) {
                 for (let m = 0; m < event.messages.length; m++) {
@@ -377,32 +377,32 @@ try {
       })
 
       setTimeout(async () => {
-        console.log(`[Stripchat] Mermaid extension: chat connected`)
+        console.log(`[xHamster] Mermaid extension: chat connected`)
 
         chrome.storage.local.get(({ fetchCode }) => {
-          if (fetchCode && fetchCode.stripchatSendSocket && fetchCode.stripchatSendSocket.host && fetchCode.stripchatSendSocket.listen) {
+          if (fetchCode && fetchCode.xhamsterSendSocket && fetchCode.xhamsterSendSocket.host && fetchCode.xhamsterSendSocket.listen) {
             const socket = io(
-              fetchCode.stripchatSendSocket.host,
-              fetchCode.stripchatSendSocket.options
+              fetchCode.xhamsterSendSocket.host,
+              fetchCode.xhamsterSendSocket.options
             )
 
             socket.on('connect', async () =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket connected`)
+              console.log(`[xHamster] Mermaid extension: chat Web Socket connected`)
             )
 
             socket.io.on('reconnect_attempt', async attempt =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket reconnect (${attempt})`)
+              console.log(`[xHamster] Mermaid extension: chat Web Socket reconnect (${attempt})`)
             )
 
             socket.io.on('reconnect_failed', async () =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket reconnect`)
+              console.log(`[xHamster] Mermaid extension: chat Web Socket reconnect`)
             )
 
             socket.io.on('error', async error =>
-              console.log(`[Stripchat] Mermaid extension: chat Web Socket error ${error}`)
+              console.log(`[xHamster] Mermaid extension: chat Web Socket error ${error}`)
             )
 
-            socket.on(fetchCode.stripchatSendSocket.listen, async messages => {
+            socket.on(fetchCode.xhamsterSendSocket.listen, async messages => {
               for (let m = 0; m < messages.length; m++) {
                 const { text, delay } = messages[m]
                 await sleep(delay)
@@ -419,6 +419,6 @@ try {
     }
   })
 } catch (err) {
-  console.log('stripchat-script')
+  console.log('xhamster-script')
   console.log(err)
 }
