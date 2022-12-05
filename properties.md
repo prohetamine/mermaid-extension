@@ -62,16 +62,14 @@
 | ✅              | isRoomCount          | Boolean    | false           | Event has room count users |
 | ⏳              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
 | ⏳              | isBan                | Boolean    | false           | User ban contains username and user |
-| ✅              | user                 | String     | Base64          | User details |
-| ✅              | model                | String     | Base64          | Model details |
-| ✅              | notice               | String     | Base64          | Notice details |
+| ✅              | user                 | Object     | Base64          | User details |
+| ✅              | model                | Object     | Base64          | Model details |
+| ✅              | notice               | Object     | Base64          | Notice details |
 | ✅              | tokenCount           | Number     | 0               | Tokens count in event |
 | ✅              | message              | String     | Base64          | User, model, notice messages |
 | ✅              | tokenMessage         | String     | Base64          | If event has token and user write private message |
 | ✅              | username             | String     | ""              | Username model and user |
 | ✅              | roomCount            | Number     | 0               | Contains count users in room |
-
-### Deep event key (parse event)
 
 | Stripchat | Event parse property | Data type | Default value    | Description    |
 | :---:           | ---                  | :---:     | :---:            | ---            |
@@ -85,16 +83,14 @@
 | ⏳              | isRoomCount          | Boolean    | false           | Event has room count users |
 | ⏳              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
 | ⚠️              | isBan                | Boolean    | false           | User ban contains NONE |
-| ✅              | user                 | String     | Base64          | User details |
-| ✅              | model                | String     | Base64          | Model details |
-| ✅              | notice               | String     | Base64          | Notice details |
+| ✅              | user                 | Object     | Base64          | User details |
+| ✅              | model                | Object     | Base64          | Model details |
+| ✅              | notice               | Object     | Base64          | Notice details |
 | ✅              | tokenCount           | Number     | 0               | Tokens count in event |
 | ✅              | message              | String     | Base64          | User, model, notice messages |
 | ✅              | tokenMessage         | String     | Base64          | If event has token and user write private message |
 | ✅              | username             | String     | ""              | Username model and user |
 | ⏳              | roomCount            | Number     | 0               | Contains count users in room |
-
-### Deep event key (parse event)
 
 | xHamsterLive | Event parse property | Data type | Default value    | Description    |
 | :---:           | ---                  | :---:     | :---:            | ---            |
@@ -108,16 +104,14 @@
 | ⏳              | isRoomCount          | Boolean    | false           | Event has room count users |
 | ⏳              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
 | ⚠️              | isBan                | Boolean    | false           | User ban contains NONE |
-| ✅              | user                 | String     | Base64          | User details |
-| ✅              | model                | String     | Base64          | Model details |
-| ✅              | notice               | String     | Base64          | Notice details |
+| ✅              | user                 | Object     | Base64          | User details |
+| ✅              | model                | Object     | Base64          | Model details |
+| ✅              | notice               | Object     | Base64          | Notice details |
 | ✅              | tokenCount           | Number     | 0               | Tokens count in event |
 | ✅              | message              | String     | Base64          | User, model, notice messages |
 | ✅              | tokenMessage         | String     | Base64          | If event has token and user write private message |
 | ✅              | username             | String     | ""              | Username model and user |
 | ⏳              | roomCount            | Number     | 0               | Contains count users in room |
-
-### Deep event key (parse event)
 
 | Bongacams | Event parse property | Data type | Default value    | Description    |
 | :---:           | ---                  | :---:     | :---:            | ---            |
@@ -131,9 +125,9 @@
 | ⏳              | isRoomCount          | Boolean    | false           | Event has room count users |
 | ⏳              | isRemovedMessage     | Boolean    | false           | Message removed contains username and user |
 | ⚠️              | isBan                | Boolean    | false           | User ban contains NONE |
-| ✅              | user                 | String     | Base64          | User details |
-| ✅              | model                | String     | Base64          | Model details |
-| ✅              | notice               | String     | Base64          | Notice details |
+| ✅              | user                 | Object     | Base64          | User details |
+| ✅              | model                | Object     | Base64          | Model details |
+| ✅              | notice               | Object     | Base64          | Notice details |
 | ✅              | tokenCount           | Number     | 0               | Tokens count in event |
 | ✅              | message              | String     | Base64          | User, model, notice messages |
 | ⏳              | tokenMessage         | String     | Base64          | If event has token and user write private message |
