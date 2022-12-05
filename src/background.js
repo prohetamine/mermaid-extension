@@ -1,3 +1,25 @@
+chrome.tabs.onCreated.addListener(tab => {
+  chrome.tabs.update(tab.id, {
+    autoDiscardable: false
+  })
+})
+
+chrome.tabs.onReplaced.addListener(tabId => {
+  chrome.tabs.update(tabId, {
+    autoDiscardable: false
+  })
+})
+
+chrome.runtime.onInstalled.addListener(details => {
+  chrome.tabs.query({}, tabs => {
+    tabs.forEach(tab => {
+      chrome.tabs.update(tab.id, {
+        autoDiscardable: false
+      })
+    })
+  })
+})
+
 const sendStack = {}
 
 const send = async (request, event) => {

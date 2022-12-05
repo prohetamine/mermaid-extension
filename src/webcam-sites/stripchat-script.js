@@ -32,7 +32,6 @@ try {
       isRemovedMessage: false,
       isDisconnect: false,
       isConnect: false,
-      isRoomCount: false,
       isBan: false,
       tokenCount: 0,
       message: "base64",

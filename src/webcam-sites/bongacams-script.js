@@ -32,7 +32,6 @@ try {
       isRemovedMessage: false,
       isDisconnect: false,
       isConnect: false,
-      isRoomCount: false,
       isBan: false,
       tokenCount: 0,
       message: "base64",
@@ -64,7 +63,7 @@ try {
         window.WebSocket = class {
           constructor (...args) {
             const instanceWebSocket = new proxyWebSocket(...args)
-            
+
             if (args[0].match(/\.bcccdn\./)) {
               const hime = document.querySelector('#hidden-input-mermaid-extension')
                   , hbme = document.querySelector('#hidden-button-mermaid-extension')
