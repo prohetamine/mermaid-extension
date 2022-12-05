@@ -43,7 +43,7 @@ The extension uses a special file with the extension .mm it needs to be loaded (
 You can pass the following [properties](https://github.com/prohetamine/mermaid-extension/blob/main/properties.md) (they are identical for all sites, but some may not be supported and will always be sent with the default value)
 
 
-
+{ ⏳ WAIT ⏳ }
 
 ### Contacts
 
