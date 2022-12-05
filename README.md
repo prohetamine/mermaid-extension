@@ -32,7 +32,7 @@ Mermaid Extension — [GitHub](https://github.com/prohetamine/mermaid-extension/
 
 ### In development or minimum properties are supported
 
-- Bongacams
+- BongaCams
 
 ### Mermaid-extension & script.mm
 

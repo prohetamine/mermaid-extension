@@ -117,6 +117,26 @@ const send = async (request, event) => {
 				})
 	    }
 
+      if (stripchatHttpEvent && fetchCode.stripchatHttpEvent) {
+				chrome.storage.local.set({
+		    	stripchatHttpEventCallback: (
+		      	await Promise.all(
+		        	fetchCode.stripchatHttpEvent.map(request => send(request, stripchatHttpEvent))
+		        )
+		      ).filter(send => send)
+				})
+	    }
+
+      if (xhamsterHttpEvent && fetchCode.xhamsterHttpEvent) {
+				chrome.storage.local.set({
+		    	xhamsterHttpEventCallback: (
+		      	await Promise.all(
+		        	fetchCode.xhamsterHttpEvent.map(request => send(request, xhamsterHttpEvent))
+		        )
+		      ).filter(send => send)
+				})
+	    }
+
 			if (bongacamsHttpEvent && fetchCode.bongacamsHttpEvent) {
 				chrome.storage.local.set({
 		    	bongacamsHttpEventCallback: (
