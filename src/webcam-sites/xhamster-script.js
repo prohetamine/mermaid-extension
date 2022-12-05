@@ -46,7 +46,7 @@ try {
   */
 
   document.addEventListener('readystatechange', async () => {
-    if (document.readyState === 'interactive' && document.head.querySelector('meta[content="#303133"]')) {
+    if (document.readyState === 'interactive' && document.head.querySelector('meta[content="#f2f2f2"]')) {
       window.hiddenInput = document.createElement('input')
       window.hiddenButton = document.createElement('button')
       window.hiddenScript = document.createElement('script')
@@ -344,7 +344,7 @@ try {
       })
     }
 
-    if (document.readyState === 'complete' && document.head.querySelector('meta[content="#303133"]')) {
+    if (document.readyState === 'complete' && document.head.querySelector('meta[content="#f2f2f2"]')) {
       chrome.storage.local.onChanged.addListener(() => {
         chrome.storage.local.get(async storage => {
           const {

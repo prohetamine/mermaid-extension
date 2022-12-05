@@ -480,3 +480,23 @@ try {
   console.log('chaturbate-script')
   console.log(err)
 }
+
+
+/*
+
+bug
+
+work:
+
+a["{\"args\":[
+  \"{\\\"type\\\": \\\"tip_alert\\\", \\\"history\\\": true, \\\"from_username\\\": \\\"dont_forget_the_balls\\\", \\\"to_username\\\": \\\"hotfallingdevil\\\", \\\"amount\\\": 1, \\\"message\\\": \\\"\\\", \\\"is_mod\\\": false, \\\"in_fanclub\\\": false, \\\"is_following\\\": true, \\\"is_anonymous_tip\\\": false, \\\"tipped_recently\\\": true, \\\"tipped_alot_recently\\\": false, \\\"tipped_tons_recently\\\": false, \\\"has_tokens\\\": true, \\\"send_to\\\": \\\"\\\", \\\"dont_send_to\\\": \\\"\\\", \\\"tid\\\": \\\"16702456830:50101\\\"}\",
+  \"true\"
+],\"callback\":null,\"method\":\"onNotify\"}"]
+
+not work:
+
+a["{\"args\":[
+  \"brendaddy13\",
+  \"{\\\"m\\\": \\\"150\\\", \\\"f\\\": \\\"default\\\", \\\"c\\\": \\\"\\\", \\\"i\\\": \\\"3H929BLZG45TK5\\\", \\\"tid\\\": \\\"\\\", \\\"media\\\": [], \\\"user\\\": \\\"brendaddy13\\\", \\\"gender\\\": \\\"m\\\", \\\"is_mod\\\": false, \\\"in_fanclub\\\": false, \\\"is_following\\\": true, \\\"tipped_tons_recently\\\": false, \\\"tipped_alot_recently\\\": false, \\\"tipped_recently\\\": false, \\\"has_tokens\\\": true, \\\"X-Spam\\\": false, \\\"X-Successful\\\": true}\"
+],\"callback\":null,\"method\":\"onRoomMsg\"}"]
+*/

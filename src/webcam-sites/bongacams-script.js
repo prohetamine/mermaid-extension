@@ -46,7 +46,7 @@ try {
   */
 
   document.addEventListener('readystatechange', async () => {
-    if (document.readyState === 'interactive' && document.body.parentElement.textContent.match(/bongacams/gi)) {
+    if (document.readyState === 'interactive' && document.head.querySelector('meta[content="#81003a"]')) {
       window.hiddenInput = document.createElement('input')
       window.hiddenButton = document.createElement('button')
       window.hiddenScript = document.createElement('script')
@@ -73,7 +73,6 @@ try {
               hbme.addEventListener('click', () => {
                 if (document.querySelector('[id="js-chat_general"]')) {
                   let currentValue = hime.value
-                  console.log(hime.value)
                   instanceWebSocket.send(
                     JSON.stringify({
                       "id":id,
@@ -81,6 +80,7 @@ try {
                       "args":["public-chat",currentValue,"key",null,true]
                     })
                   )
+                  id++
                 } else {
                   console.log('[not your room]', hime.value)
                 }
@@ -245,7 +245,7 @@ try {
       })
     }
 
-    if (document.readyState === 'complete' && document.body.parentElement.textContent.match(/bongacams/gi)) {
+    if (document.readyState === 'complete' && document.head.querySelector('meta[content="#81003a"]')) {
       chrome.storage.local.onChanged.addListener(() => {
         chrome.storage.local.get(async storage => {
           const {
@@ -306,7 +306,7 @@ try {
             socket.on(fetchCode.bongacamsSendSocket.listen, async messages => {
               for (let m = 0; m < messages.length; m++) {
                 const { text, delay } = messages[m]
-                await sleep(delay)
+                await sleep(delay + 200)
 
                 const fixEmotionText = (match => (match && match[0]) ? ' '+text : text)(text.match(/^:(\w|-|_|\d)+/))
 
