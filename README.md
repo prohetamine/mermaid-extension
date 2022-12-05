@@ -34,6 +34,10 @@ Mermaid Extension — [GitHub](https://github.com/prohetamine/mermaid-extension/
 
 - BongaCams
 
+### Warning ⚠️
+
+At the moment, the speed of development is much faster than the speed of writing documentation, although this is not enough. Be patient and do not use fresh updates, the extension version must strictly correspond to the latest version of the npm module, otherwise you risk getting a crash. I work on improving every day. The most stable version at the moment is 1.4.7
+
 ### Mermaid-extension & script.mm
 
 The extension uses a special file with the extension .mm it needs to be loaded (if you use WebSocket, you need to reload the page)
